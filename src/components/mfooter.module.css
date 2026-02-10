@@ -1,0 +1,12 @@
+.divfooter{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: rgba(25, 0, 74, 0.08);
+    color: #717171;
+}
+
+.divfooter footer {
+    font-size: 0.8rem;
+    padding: 2px;
+}

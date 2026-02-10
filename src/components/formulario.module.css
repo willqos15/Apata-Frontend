@@ -1,0 +1,103 @@
+.formulario{
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    min-width: 200px;
+    padding: 0px 20px;
+    margin: 40px auto;
+    justify-content: flex-start;
+    border-radius: 20px;
+    background-color: var(--primary-color); 
+   
+}
+
+.ocultar {display: none}
+.imgload {
+    padding-top: 60px;
+    width: 80px;
+}
+
+
+.formulario label {
+    color: var(--text-color);
+    font-size: 25px;
+    text-align: left;
+    padding: 30px 0px 10px 0px;
+    font-weight: bold;}
+
+.formulario p{
+    font-size: 20px;
+    color: #8f0404;
+    padding: 5px;
+    margin: 0px;
+}
+
+.caixaimg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+
+.nomarquivo{
+    font-size: 15px;
+    padding-left: 10px;
+    color: #fff;
+}
+
+
+.botaoenviar {
+    margin: 20px auto;   
+    font-size: 30px;
+}
+
+.caixaimg button{
+    font-size: 20px;
+}
+
+
+form .botaoenviar, .caixaimg button{
+    border-radius: 10px;
+    padding: 10px 10px;
+    background-color: var(--secondary-color);
+    border: 0;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.5s;
+    font-size: 0.6rem;
+    font-family: "WDXL Lubrifont JP N", sans-serif;
+}
+
+form .botaoenviar:hover, .caixaimg button:hover{
+    background-color: var(--text-color);
+    color: #fff;
+}
+
+
+.formulario textarea{
+    field-sizing: content;
+    resize: vertical;
+    min-height: 58px;
+    max-height: 150px;
+}
+.formulario input,.formulario input[type="tel"], .formulario textarea{
+    font-size: 20px;
+    padding: 5px 20px;
+    border-radius: 10px;
+    border: 0;
+    background-color: #E3DFDA;
+    color:  var(--text-color);}
+
+
+@media (max-width: 580px) {
+
+    .formulario {
+        max-width: 100vh;
+        border-radius: 0px;
+        margin-bottom: 0px;
+    
+    }
+}

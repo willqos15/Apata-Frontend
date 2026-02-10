@@ -1,0 +1,79 @@
+.loginmain{
+    display: block;
+    margin: auto;
+    background-color: var(--primary-color); 
+    border-radius: 20px;
+    padding: 5px 20px;
+    margin-top: 80px;
+    color: #000000;
+    max-width: 400px;
+    min-width: 300px;
+}
+
+.imgload {
+    padding-top: 60px;
+    width: 80px;
+}
+
+.loginmain div {text-wrap: nowrap;}
+
+.loginmain label {
+    font-weight: bold;
+    font-size: 20px;
+    margin: 0px 5px;
+}
+
+.loginmain input {
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 10px;
+    width: 70%;
+    border: 0;
+    background-color: var(--bg-color);
+}
+
+.pcampo {margin-top: 5px;
+padding-left: 20%;
+color: rgb(255, 221, 0);
+font-weight: bold;}
+
+.plogin {margin: auto;
+font-size: 25px;
+padding: 10px 0px 0px 0px;
+color: rgb(255, 221, 0);
+font-weight: bold;}
+
+.loginmain h2 {
+    margin: 10px 0px 0px 0px;
+    font-size: 40px;
+}
+
+.btnlogin{
+ font-family: "WDXL Lubrifont JP N", sans-serif;
+font-size: 20px;
+font-weight: bold;
+padding: 5px 10px;
+align-self: center;
+border-radius: 10px;
+margin: 20px 0px 5px 0px;
+background-color: var(--secondary-color);
+color: #ffffff;
+transition: 0.5s;
+border: 0;
+cursor: pointer;
+
+}
+
+.btnlogin:hover{
+    background-color:  var(--text-color);
+color:#fff;
+
+}
+
+@media (max-width:435px){
+    .loginmain{width: 100vw;
+    border-radius: 0px;}
+
+    
+
+}

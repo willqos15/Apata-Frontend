@@ -1,0 +1,25 @@
+*{box-sizing: border-box;
+outline:0;}
+
+html, body, #root{
+  margin: 0;
+  padding: 0;
+  font-family: "WDXL Lubrifont JP N", sans-serif;
+  font-weight: 400px;
+}
+
+
+
+html {font-size: 25pt;}
+
+body{background-color: #E3DFDA;
+margin-top: 0px;}
+
+
+:root {
+  padding-top: 60px;
+  
+  
+}
+
+
