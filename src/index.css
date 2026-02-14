@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 *{box-sizing: border-box;
 outline:0;}
 
@@ -12,7 +14,7 @@ html, body, #root{
 
 html {font-size: 25pt;}
 
-body{background-color: #E3DFDA;
+body{background-color: var(--bg-color);
 margin-top: 0px;}
 
 

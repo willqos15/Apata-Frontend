@@ -1,24 +1,20 @@
-import styles from "./Navbar.module.css"
 import { Link } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom"
 import { ContextNavbar } from "../ContextNavbar";
-import { FaSearch } from "react-icons/fa";
 import Alert from "./alert";
 import LogoApata from "/logoapata.svg?url"
 
 
 function Navbar() {
 
-
   const navigate = useNavigate()
   const { itens, setItens, barraBusca, setBarraBusca, adm, setAdm } = useContext(ContextNavbar)
-  const [menu, setMenu] = useState(false)
-  const [wbarra, setWBarra] = useState("")
+  const [openmenuham, setOpenMenuHam] = useState(false)
   const [poup, setPoup] = useState(false)
 
- 
+
   function pesquisar(e) {
     e.preventDefault()
 
@@ -31,7 +27,6 @@ function Navbar() {
       .then((resposta) => {
         setItens(resposta.data)
         navigate('/busca')
-
 
       })
       .catch(erro => {
@@ -65,19 +60,9 @@ function Navbar() {
 
   function inputpesquisa(valor) {
     setBarraBusca(valor.target.value)
-
   }
 
-  function tampasquisa() {
-    const barra = document.getElementsByName("pesquisa")[0]
-    const largura = barra.getBoundingClientRect().width
 
-    console.log(largura)
-    //mesmo valor do .principal form input{min-width: 90px;}
-    if (largura <= 90) {
-      setWBarra("on")
-    }
-  }
 
   function sair() {
     localStorage.removeItem("token")
@@ -96,72 +81,87 @@ function Navbar() {
   return (
     <>
 
-      <header className={styles.principal}>
+      <header className="flex fixed top-0 justify-between items-center w-screen max-h-15 bg-white z-100 px-4 pr-8">
 
-        <div onClick={paginainicial} className={styles.titulo}>
-          {wbarra === "on" ?
-          <h1 className={styles.bh1}></h1>
-          : <h1 className={styles.h1ok}> 
-          <img src={LogoApata} className={styles.logo}></img>
-          APATA</h1>}
+        <div onClick={paginainicial} className="flex flex-row justify-center items-center gap-x-1">
+          <img src={LogoApata} className="h-5 w-auto" />
+          <h1 className="text-(--text-color) font-extrabold text-base">APATA</h1>
         </div>
 
-        <div className={styles.itens}>
+      <nav className="relative flex items-center justify-between">
 
-          <form onSubmit={pesquisar}>
-            <div className={styles.caixabusca}>
-              <FaSearch className={wbarra === "on" ? styles.digicon : styles.iconebusca} />
+  {/* Botão hambúrguer (só mobile) */}
+  <button
+    className="flex flex-col justify-center gap-0.5   sm:hidden p-2"
+    onClick={() => {
+      setOpenMenuHam(x => !x)
+      if (!openmenuham) {
+        setTimeout(() => setOpenMenuHam(false), 18000)
+      }
+    }}
+  >
+    <span className="w-4 h-0.5 bg-(--text-color) transition-all" />
+    <span className="w-4 h-0.5 bg-(--text-color) transition-all" />
+    <span className="w-4 h-0.5 bg-(--text-color) transition-all" />
+  </button>
 
-              <input
-                onFocus={tampasquisa}
-                onBlur={() => setWBarra("")}
-                onChange={inputpesquisa}
-                className={wbarra === "on" ? styles.digitando : styles.inputbusca}
-                name="pesquisa" type="search" placeholder="Pesquisar" />
-            </div>
-          </form>
+  {/* Menu */}
+  <ul
+    className={`
+      absolute top-full right-0 mt-0
+      w-fit bg-white
+      overflow-hidden
+      transition-all duration-300
 
-          <div className={styles.contm}>
-            <button onClick={() => { 
-              if (!menu) {setMenu(true)
-                setTimeout(()=>{
-              setMenu(false)},6000)
-              }
+      ${openmenuham ? "max-h-fit opacity-100" : "max-h-0 opacity-0"}
 
-              if (menu){setMenu(false)}
-            }}
-              
-              className={styles.menubtn}>
-              <span></span><span></span><span></span>
-            </button>
+      flex flex-col
+      sm:gap-2 gap-0 px-2 pb-1 rounded-b-sm
+      sm:static sm:mt-0 sm:w-auto sm:bg-transparent 
+      sm:max-h-none sm:opacity-100
+      sm:flex-row sm:p-0
+      sm:text-sm text-[15pt]
+    `}
+  >
 
-            <nav className={menu ? styles.moption : styles.moptioff}>
-              <span>
-                <Link to="/" className={styles.link}>Inicio</Link></span>
-              <span onClick={telaadm}>Gerenciar</span>
+    <li className="navitem">
+      <Link to="/">
+        Início
+      </Link>
+    </li>
 
-              {adm && <>
-              <span onClick={paginacriar}>Cadastrar</span>
-              <span onClick={()=>setPoup(true)}
-              className={styles.logout}>Sair</span>
+    <li onClick={telaadm} className="navitem">
+      Gerenciar
+    </li>
 
-              </>}
-            </nav>
+    {adm && (
+      <>
+        <li onClick={paginacriar} className="navitem">
+          Cadastrar
+        </li>
 
-          </div>
+        <li
+          onClick={() => setPoup(true)}
+          className="navitem"
+        >
+          Sair
+        </li>
+      </>
+    )}
+
+  </ul>
+</nav>
 
 
-        </div>
 
-
-      </header>
+      </header >
 
       <Alert titulo={"AVISO"}
-      descricao={`Tem certeza que deseja sair da conta?`}
-      bty={"Sim"} fbty={sair}
-      btn={"Não"} fbtn={() => setPoup(false)}
-      estado={poup}
-    />
+        descricao={`Tem certeza que deseja sair da conta?`}
+        bty={"Sim"} fbty={sair}
+        btn={"Não"} fbtn={() => setPoup(false)}
+        estado={poup}
+      />
 
 
     </>

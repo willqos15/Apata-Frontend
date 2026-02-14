@@ -1,9 +1,8 @@
-import styles from './mfooter.module.css'
 
 function MFooter() {
-    return(<div className={styles.divfooter}>
+    return(<div className="absolute bottom-0 w-full bg-[rgba(25,0,74,0.08)] text-gray-400">
 
-    <footer>Site desenvolvido por William Queiroz @2025 </footer>
+    <footer className='className="text-xxs p-0.5"'>Site desenvolvido por William Queiroz @2025 </footer>
     </div>)
 }
 

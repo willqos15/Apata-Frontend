@@ -1,4 +1,3 @@
-import styles from '../components/formulario.module.css'
 import { Controller, useForm } from 'react-hook-form'
 import axios from 'axios'
 import { useRef, useState } from 'react'
@@ -100,46 +99,46 @@ clearErrors - limpa erros
 
 
     {estado === "load" && <img src={loading}
-                className={styles.imgload}/>}
+                className="pt-15 w-20"/>}
 
 
-    <form onSubmit={handleSubmit(enviar)}  className={styles.formulario}>
+    <form onSubmit={handleSubmit(enviar)}  className="flex flex-col max-w-100 min-w-50 px-5 my-10 mx-auto justify-start rounded-2xl bg-(--primary-color)">
       {estado === "1" &&
         <>
 
-          <label> Nome do item perdido:</label>
-          <input {...register("nome", { required: true })} type="text" placeholder="Exemplo: Lápis, borracha e etc." onFocus={Scrollar} />
-          {errors.nome && <p>Campo obrigatório</p>}
+          <label className="formlabel"> Nome do item perdido:</label>
+          <input className='bg-white rounded-md px-2' {...register("nome", { required: true })} type="text" placeholder="Exemplo: Lápis, borracha e etc." onFocus={Scrollar} />
+          {errors.nome && <p className="formerro">Campo obrigatório</p>}
 
-          <label > Carregue uma imagem:</label>
-          <div className={styles.caixaimg}>
+          <label className="formlabel"> Carregue uma imagem:</label>
+          <div className="flex justify-center items-center">
 
-            <button onClick={()=>{foto.current.click()}}> Escolha sua imagem </button>
+            <button className="rounded-xl p-2.5 bg-(--secondary-color) border-0 text-white font-bold cursor-pointer transition duration-500 text-2xs font-sans" onClick={()=>{foto.current.click()}}> Escolha sua imagem </button>
             
-            <input type='file' onChange={uploading} onFocus={Scrollar} ref={foto} className={styles.ocultar}/>
+            <input  type='file' onChange={uploading} onFocus={Scrollar} ref={foto} className="hidden"/>
 
 
-            <span className={styles.nomarquivo}>
+            <span className="text-base pl-2.5 text-white">
               {nomearq ? nomearq : ""}
             </span>
           </div>
-          {msgfoto === "erro" && <p>Campo obrigatório</p>}
+          {msgfoto === "erro" && <p className="formerro">Campo obrigatório</p>}
 
 
-          <label> Descrição:</label>
-          <textarea {...register("descricao", { required: true })} rows={2} placeholder='Descreva a aparência, cor, tamanho, detalhes e etc.' onFocus={Scrollar} />
-          {errors.descricao && <p>Campo obrigatório</p>}
+          <label className="formlabel"> Descrição:</label>
+          <textarea className='bg-white rounded-md px-2 min-h-8 max-h-20' {...register("descricao", { required: true })} rows={2} placeholder='Descreva a aparência, cor, tamanho, detalhes e etc.' onFocus={Scrollar} />
+          {errors.descricao && <p className="formerro">Campo obrigatório</p>}
 
 
-          <label> Local onde foi perdido:</label>
-          <input {...register("local", { required: true })} type="text" placeholder='Exemplo: Pátio, Sala e etc.' onFocus={Scrollar} />
-          {errors.local && <p>Campo obrigatório</p>}
+          <label className="formlabel"> Local onde foi perdido:</label>
+          <input className='bg-white rounded-md px-2' {...register("local", { required: true })} type="text" placeholder='Exemplo: Pátio, Sala e etc.' onFocus={Scrollar} />
+          {errors.local && <p className="formerro">Campo obrigatório</p>}
 
-          <label> Proprietário:</label>
-          <input {...register("proprietario", { required: true })} type="text" placeholder='Nome completo.' onFocus={Scrollar} />
-          {errors.proprietario && <p>Campo obrigatório</p>}
+          <label className="formlabel"> Proprietário:</label>
+          <input className='bg-white rounded-md px-2' {...register("proprietario", { required: true })} type="text" placeholder='Nome completo.' onFocus={Scrollar} />
+          {errors.proprietario && <p className="formerro">Campo obrigatório</p>}
 
-          <label> Contato (Whatsapp):</label>
+          <label className="formlabel"> Contato (Whatsapp):</label>
 
 
           <Controller
@@ -156,6 +155,7 @@ clearErrors - limpa erros
 
               <PatternFormat
                 {...field}
+                className='bg-white rounded-md px-2'
                 format='+55 (##) # ####-####'
                 placeholder='(XX) X XXXX-XXXX'
                 onFocus={Scrollar}
@@ -170,11 +170,9 @@ clearErrors - limpa erros
           />
 
 
-          {/* <input {...register("contato", { required: "Campo obrigatório", minLength: { value: 11, message: "O número precisa ter no mínimo 10 digítos. Não esqueça o DDD." } })} type="tel" placeholder='(DDD) 90000 0000' onFocus={Scrollar} inputMode='numeric' /> */}
+          {errors.contato && <p className="formerro">{errors.contato.message}</p>}
 
-          {errors.contato && <p>{errors.contato.message}</p>}
-
-          <button type="submit" onClick={errofotos} className={styles.botaoenviar}>Enviar</button>
+          <button type="submit" onClick={errofotos} className="my-5 mx-auto text-7.5 rounded-xl p-2.5 bg-(--secondary-color) border-0 text-white font-bold cursor-pointer transition duration-500 text-2xs font-sans">Enviar</button>
 
         </>
       }

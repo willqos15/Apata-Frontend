@@ -1,10 +1,8 @@
-
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
 import Formulario from '../components/formulario'
 import { useState } from 'react'
-import styles from './pagecadastro.module.css'
-//npm install react-hook-form
+
 
 
 function PageCadastro() {
@@ -58,9 +56,10 @@ function PageCadastro() {
   */
     return (<>
 
-    {estado==="fim" && <p className={styles.resposta}> Cadastro feito com sucesso!</p>}
-    {estado==="limite" && <p className={styles.rerro}> Limite de cadastros excedidos!</p>}
-    {estado==="erro" && <p className={styles.rerro}> Erro ao cadastrar!</p>}
+    {estado==="fim" && <p className="pt-10 text-xl text-green-600 font-bold"> Cadastro feito com sucesso!</p>}
+    {estado==="limite" && <p className="pt-10 text-xl text-[rgb(128,0,0)] font-bold"> Limite de cadastros excedidos!</p>}
+    {estado==="erro" && <p className="pt-10 text-xl text-[rgb(128,0,0)] font-bold"> Erro ao cadastrar!</p>}
+
     <Formulario funcao={enviar}/>
 
         
