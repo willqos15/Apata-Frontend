@@ -190,14 +190,16 @@ function Item({
 
             {/*VERSÃO BOTÃO PARA USUÁRIO GERAL*/}
             {!admin ?
-                <div className={`w-30 bg-(--bg-color2) text-(--text-color2) p-2 pt-0 flex flex-col ease-linear transition-opacity overflow-hidden ${aberto ? "max-h-40 duration-500 opacity-100" : " max-h-0  duration-0  opacity-0"}`}>
-                    <label className="font-bold text-[12pt]">
-                        {especie === "cachorro" && sexo === "macho" && " Cachorro | Macho"}
-                        {especie === "cachorro" && sexo === "femea" && " Cachorro | Fêmea "}
-                        {especie === "gato" && sexo === "femea" && "Gato | Fêmea "}
-                        {especie === "gato" && sexo === "macho" && "Gato | Macho "}
+                <div className={`w-30 bg-(--bg-color2) text-(--text-color2) px-2 py-0 pt-0 flex flex-col ease-linear transition-opacity ${aberto ? "max-h-40 duration-500 opacity-100 overflow-visible" : " max-h-0  duration-0 overflow-hidden"}`}>
+                {/* <div className={`w-30 bg-(--bg-color2) text-(--text-color2) p-2 pt-0 flex flex-col ease-linear transition-opacity ${aberto ? "max-h-40 duration-500 opacity-100 overflow-visible" : " max-h-0  duration-0  opacity-0 overflow-hidden"}`}> */}
 
-                        | Porte {porte === "medio" ? "médio" : porte}</label>
+                    <label className="font-bold text-[18px]">
+                        {especie === "cachorro" && sexo === "macho" && " Cachorro de "}
+                        {especie === "cachorro" && sexo === "femea" && " Cadela de "}
+                        {especie === "gato" && sexo === "femea" && "Gata de "}
+                        {especie === "gato" && sexo === "macho" && "Gato de "}
+
+                        porte {porte === "medio" ? "médio" : porte}</label>
                     <p className="text-left">{Descricao}.</p>
 
 
@@ -217,7 +219,7 @@ function Item({
 
             {/*VERSÃO FORMULÁRIO PARA EDITAR COMO ADIMINISTRADOR*/}
             {admin ?
-                <div className={`w-30 bg-(--bg-color2) text-(--text-color2) ease-linear transition-opacity ${editando ? "max-h-fit duration-500 opacity-100" : "max-h-0 duration-0  opacity-0"}`}>
+                <div className={`w-30 bg-(--bg-color2) text-(--text-color2) ease-linear transition-opacity ${editando ? "max-h-fit duration-500 opacity-100" : "max-h-0 duration-0 overflow-hidden opacity-0"}`}>
 
                     <form onSubmit={handleSubmit(form)}>
 

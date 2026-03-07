@@ -43,25 +43,25 @@ const petsFiltrados = Array.isArray(data)
 
     <About />
 
-    <div className="flex flex-wrap flex-row gap-2 justify-center w-full overflow-x-hidden">
+    <div className="flex flex-wrap flex-row gap-1 items-start justify-center w-full overflow-x-hidden">
      
 
-      <div className='w-full md:order-1 order-3'>
+      <div className='w-full [@media(min-width:1100px)]:order-1 order-3'>
         <p className='text-(--text-color) '>Adotar um animal:</p>
 
         {!isLoading &&
-          <div className=' bg-(--bg-color2) w-fit rounded-sm p-2 mx-auto  items-center flex flex-col mb-2'>
+          <div className=' bg-(--bg-color2) w-fit  rounded-sm p-4 mx-auto  items-center flex flex-col mb-2'>
 
             <Search busca={busca} setBusca={setBusca} />
             
 
 
-            <div className='flex flex-row gap-2 items-center justify-center'>
+            <div className='flex flex-row gap-2 w-full items-center justify-center sm:text-[18pt] text-[12pt]'>
 
-              <div className='flex flex-col text-(--text-color) text-[18pt]'>
+              <div className='flex flex-col text-(--text-color) '>
                 <label>Espécie</label>
                 <select
-                  className="bg-white text-[16pt] px-1 rounded-sm text-black border-2 border-(--primary-color) w-fit"
+                  className="bg-white px-1 rounded-sm text-black border-2 border-(--primary-color) w-fit"
                   value={filtroEspecie}
                   onChange={(e) => setFiltroEspecie(e.target.value)}
                 >
@@ -72,10 +72,10 @@ const petsFiltrados = Array.isArray(data)
               </div>
 
 
-              <div className='flex flex-col text-(--text-color) text-[16pt]'>
+              <div className='flex flex-col text-(--text-color)'>
                 <label>Sexo</label>
                 <select
-                  className="bg-white text-[16pt] px-1 rounded-sm text-black border-2 border-(--primary-color)"
+                  className="bg-white px-1 rounded-sm text-black border-2 border-(--primary-color)"
                   value={filtroSexo}
                   onChange={(e) => setFiltroSexo(e.target.value)}
                 >
@@ -86,10 +86,10 @@ const petsFiltrados = Array.isArray(data)
               </div>
 
 
-              <div className='flex flex-col text-(--text-color) text-[16pt]'>
+              <div className='flex flex-col text-(--text-color)'>
                 <label>Porte</label>
                 <select
-                  className="bg-white text-[16pt] px-1 rounded-sm text-black border-2 border-(--primary-color)"
+                  className="bg-white px-1 rounded-sm text-black border-2 border-(--primary-color)"
                   value={filtroPorte}
                   onChange={(e) => setFiltroPorte(e.target.value)}
                 >
@@ -106,30 +106,11 @@ const petsFiltrados = Array.isArray(data)
         }
         
 
-        
-
-
-
-
-
-        {isLoading && <div className='flex flex-col justify-center items-center mx-2'>
-
-          
-
-          <img src={loading} className="pt-15 w-20 h-auto" />
-
-          <div className="bg-[rgb(252,255,177)] rounded-2xl text-base p-2.5 text-left mx-auto mb-7.5">
-            <h3 className="text-center m-0 p-0">Aviso: Versão de Teste</h3>
-            <p>
-              <strong>Observação:</strong> o site pode demorar a carregar no primeiro acesso, pois a hospedagem do servidor e do banco de dados está sendo feita de forma gratuita.
-            </p>
-          </div>
-        </div>}
       </div>
       
 
 
-      <aside className="md:order-2 order-1 w-fit">
+      <aside className=" [@media(min-width:1100px)]:order-2 order-1 w-fit">
         <div className='scroll-mt-8 sticky w-fit top-8 flex flex-col gap-2 px-2' id="doar">
           <CardAside title="PIX SOLIDÁRIO"
             image={imagempix} content={<><p className='text-[12pt] font-bold'>19.552.047/0001-43</p>
@@ -149,15 +130,29 @@ const petsFiltrados = Array.isArray(data)
           <p className="text-[18pt] text-(--text-color)"
           >Nenhum animal cadastrado! </p>} */}
 
-              {!error && <p className="text-[18pt] font-bold text-red-800"> Algo deu errado. Tente novamente.</p>}
+              
 
-      <section className="scroll-mt-8 md:order-3 order-4 gap-2 justify-center items-start grid xl:grid-cols-3 lg:grid-cols-2 grid-cols-1"
+      <section className="scroll-mt-8  [@media(min-width:1100px)]:order-3 order-4 gap-2  xl:w-97.5 items-start flex flex-wrap justify-center mb-4"
         id="adotar">
 
 
 
 
-        
+        {error && !isLoading && <p className="text-[18pt] font-bold text-red-800 w-full"> Algo deu errado. Tente novamente.</p>}
+
+              {!error && !isLoading && petsFiltrados?.length<=0 && 
+            <p className='text-[18pt] text-(--text-color) w-full'>Nenhum animal encontrado.</p>}
+
+             {isLoading && <div className='flex flex-col justify-center items-center mx-2'>
+
+          <img src={loading} className="w-20 h-auto" />
+
+          <div className="bg-(--bg-color2) text-(--text-color)rounded-2xl text-base p-2.5 mx-auto m-1 text-center">
+            <p className='font-bold'>Procurando seu novo melhor amigo!
+            </p>
+            <p>O carregamento pode demorar alguns segundos.</p>
+          </div>
+        </div>}
        
 
         {!isLoading &&
@@ -177,15 +172,14 @@ const petsFiltrados = Array.isArray(data)
               />
             ))} </>}
 
-            {petsFiltrados?.length<=0 && 
-            <p className='text-[18pt] text-(--text-color)'>Nenhum animal encontrado.</p>}
+            
 
 
       </section>
 
 
 
-      <aside className='md:order-4 order-2 flex flex-col gap-5'>
+      <aside className=' [@media(min-width:1100px)]:order-4 order-2 flex flex-col gap-5'>
         <div className='sticky top-8 flex flex-col gap-2 px-2'>
 
 

@@ -7,12 +7,15 @@ import loading from '../img/load.gif'
 
 function Formulario() {
 
+  
   const foto = useRef(null)
   const inputFile = useRef(null)
 
-  const [estado, setEstado] = useState("1")
+
   const [msgfoto, setMsgFoto] = useState("")
-  const [nomearq, setNomeArq] = useState()
+  const [nomearq, setNomeArq] = useState("")
+  const[msg,setMsg] = useState("")
+    const[estado,setEstado] = useState("inicio")
 
 
   function errofotos() {
@@ -27,7 +30,7 @@ function Formulario() {
   }
 
   function enviar(dados) {
-
+    if (estado !== "inicio") return;
 
     if (errofotos()) return
 
@@ -56,32 +59,51 @@ function Formulario() {
     )
       .then(() => {
 
-        reset()
+        reset({
+  nome: "",
+  especie: "",
+  porte: "",
+  sexo: "",
+  descricao: "",
+  contato: ""
+})
         inputFile.current.value = ""
         foto.current = null
         setNomeArq("")
         setMsgFoto("")
+        setEstado("inicio")
+        setMsg("ok")
 
 
-        setTimeout(() => {
-          setEstado("1")
-        }, 800)
+        // setTimeout(() => {
+        //   setEstado("1")
+        // }, 800)
 
       })
       .catch((erro) => {
         console.log(erro)
 
-        setTimeout(() => {
-          setEstado("1")
-        }, 800)
+        setEstado("inicio")
+        setMsg("erro")
       })
   }
 
 
 
 
-  const { register, control, handleSubmit, formState: { errors }, reset } = useForm({ mode: "onChange" })
 
+  const { register, control, handleSubmit, formState: { errors }, reset } =
+  useForm({
+    mode: "onChange",
+    defaultValues: {
+      nome: "",
+      especie: "",
+      porte: "",
+      sexo: "",
+      descricao: "",
+      contato: ""
+    }
+  })
   /*
 register - linka o input ao React Hook Form (essencial)
 handleSubmit - garante a validação antes de rodar a função
@@ -128,16 +150,14 @@ clearErrors - limpa erros
 
 
 
-  return (<>
+  return (<div className='pt-10 relative min-h-screen'>
 
 
-    {estado === "load" && <img src={loading}
-      className="pt-15 w-20" />}
+   
 
-
-    <form onSubmit={handleSubmit(enviar)} className="flex flex-col max-w-72 px-5 my-10 mx-auto justify-start rounded-2xl bg-(--bg-color2)">
-      {estado === "1" &&
-        <>
+    <form onSubmit={handleSubmit(enviar)} className={`flex flex-col max-w-72 px-5 my-10 mx-auto justify-start rounded-2xl bg-(--bg-color2) `}>
+      
+  <fieldset disabled={estado !== "inicio"} className="flex flex-col">
 
           <label className="formlabel"> Nome do animal:</label>
           <input className='input' {...register("nome", { required: true })} type="text" placeholder="Nome do animal." onFocus={Scrollar} />
@@ -225,6 +245,7 @@ clearErrors - limpa erros
               <PatternFormat
                 {...field}
                 className='input'
+                value={field.value || ""}
                 format='+55 (##) # ####-####'
                 placeholder='(XX) X XXXX-XXXX'
                 onFocus={Scrollar}
@@ -237,21 +258,29 @@ clearErrors - limpa erros
 
             )}
           />
-
+</fieldset>
 
           {errors.contato && <p className="formerro">{errors.contato.message}</p>}
 
           {/* <button type="submit" onClick={errofotos} className="my-5 mx-auto text-7.5 rounded-xl p-2.5 bg-(--secondary-color) border-0 text-white font-bold cursor-pointer transition duration-500 text-2xs font-sans">Enviar</button> */}
           <br />
-          <Button name="Salvar" type="submit" size="20" />
+          <Button name={`${estado=== "inicio" ? "Salvar" : "Salvando..."}`} type="submit" size="20"
+          disabled={estado !== "inicio"}
+           className={`${estado=== "inicio" ? "" : "cursor-default bg-gray-300 text-gray-600 hover:bg-gray-300  hover:text-gray-600"}`} />
 
-        </>
-      }
+        
+      
     </form>
 
+ {estado === "load" && <img src={loading}
+      className="w-20 mx-auto m-4" />}
+
+    {msg==="ok" && estado !== "load" && <p className="p-2 text-base text-green-600 font-bold"> Cadastro feito com sucesso!</p>}
+    {msg==="erro" && estado !== "load" && <p className="pt-10 text-base text-[rgb(128,0,0)] font-bold"> Erro ao cadastrar!</p>}
 
 
 
-  </>)
+
+  </div>)
 }
 export default Formulario

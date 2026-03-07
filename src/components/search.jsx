@@ -34,14 +34,14 @@ export default function Search({ busca, setBusca }) {
   }
 
   return (
-    <div className="flex w-full justify-center items-center">
-      <form onSubmit={pesquisar}>
+    <div className=" w-11/12 justify-center items-center">
+      <form onSubmit={pesquisar} className="flex flex-nowrap">
          <input
       type="text"
       value={busca}
       placeholder="Buscar por nome."
       onChange={(e) => setBusca(e.target.value)}
-      className="border-2 border-(--primary-color) bg-(--bg-color) p-1 h-6 rounded-sm w-fit"
+      className="border-2 border-(--primary-color) bg-(--bg-color) p-1 h-6 rounded-sm sm:w-40 w-32 sm:text-[24px] text-[18px]"
     />
 
         <button type="submit">

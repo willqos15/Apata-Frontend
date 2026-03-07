@@ -85,14 +85,14 @@ function Gerenciar() {
   // if (error) return <p>Erro ao carregar itens</p>
 
 
-  
+
   const [filtroEspecie, setFiltroEspecie] = useState("")
   const [filtroSexo, setFiltroSexo] = useState("")
   const [filtroPorte, setFiltroPorte] = useState("")
 
 
   const petsFiltrados = Array.isArray(data)
-  ? data.filter((pet) => {
+    ? data.filter((pet) => {
       return (
         (busca === "" || pet.nome.toLowerCase().includes(busca.toLowerCase())) &&
         (filtroEspecie === "" || pet.especie === filtroEspecie) &&
@@ -100,13 +100,13 @@ function Gerenciar() {
         (filtroPorte === "" || pet.porte === filtroPorte)
       )
     })
-  : []
+    : []
 
 
 
-  return (<div className='min-h-275'>
+  return (<div className='flex flex-col justify-start items-center'>
 
-    {load === true ? <img src={loading} className="pt-15 w-20 mx-auto" /> : <>
+    {load === true ? <img src={loading} className="m-16 w-20 mx-auto" /> : <>
 
 
       <Alert titulo={"AVISO"}
@@ -118,70 +118,70 @@ function Gerenciar() {
 
 
 
- {/* {data?.length <= 0 && <p className="pt-10 text-xl font-bold">Nenhum item cadastrado! </p>} */}
+      {/* {data?.length <= 0 && <p className="pt-10 text-xl font-bold">Nenhum item cadastrado! </p>} */}
 
 
-        
-        <section className="flex flex-wrap m-4 gap-2 justify-center items-start">
+
+      <section className="flex flex-wrap m-4 gap-2 justify-center items-start">
 
 
-           <div className='p-2 flex flex-col flex-wrap gap-2 w-fit items-center justify-center bg-(--bg-color2)'>
+        <div className='flex flex-col p-4 flex-wrap gap-2 w-fit items-center justify-center bg-(--bg-color2)'>
 
-             <p className='text-(--text-color)'>Filtrar</p>
-        <Search busca={busca} setBusca={setBusca} />
+          <p className='text-(--text-color)'>Filtrar</p>
+          <Search busca={busca} setBusca={setBusca} />
 
-        <div className='flex flex-row justify-center items-center gap-2'>
+          <div className='flex flex-row sm:text-[18pt] text-[12pt] justify-center items-center gap-2'>
 
-              <div className='flex flex-col text-(--text-color) text-[18pt]'>
-                <label>Espécie</label>
-                <select
-                  className="bg-white text-[16pt] px-1 rounded-sm text-black border-2 border-(--primary-color) w-fit"
-                  value={filtroEspecie}
-                  onChange={(e) => setFiltroEspecie(e.target.value)}
-                >
-                  <option value="">Todas</option>
-                  <option value="cachorro">Cachorro</option>
-                  <option value="gato">Gato</option>
-                </select>
-              </div>
-
-
-              <div className='flex flex-col text-(--text-color) text-[16pt]'>
-                <label>Sexo</label>
-                <select
-                  className="bg-white text-[16pt] px-1 rounded-sm text-black border-2 border-(--primary-color)"
-                  value={filtroSexo}
-                  onChange={(e) => setFiltroSexo(e.target.value)}
-                >
-                  <option value="">Todos</option>
-                  <option value="macho">Macho</option>
-                  <option value="femea">Fêmea</option>
-                </select>
-              </div>
-
-
-              <div className='flex flex-col text-(--text-color) text-[16pt]'>
-                <label>Porte</label>
-                <select
-                  className="bg-white text-[16pt] px-1 rounded-sm text-black border-2 border-(--primary-color)"
-                  value={filtroPorte}
-                  onChange={(e) => setFiltroPorte(e.target.value)}
-                >
-                  <option value="">Todos</option>
-                  <option value="pequeno">Pequeno</option>
-                  <option value="medio">Médio</option>
-                  <option value="grande">Grande</option>
-                </select>
-              </div>
-              </div>
+            <div className='flex flex-col text-(--text-color)'>
+              <label>Espécie</label>
+              <select
+                className="bg-white px-1 rounded-sm text-black border-2 border-(--primary-color) w-fit"
+                value={filtroEspecie}
+                onChange={(e) => setFiltroEspecie(e.target.value)}
+              >
+                <option value="">Todas</option>
+                <option value="cachorro">Cachorro</option>
+                <option value="gato">Gato</option>
+              </select>
             </div>
+
+
+            <div className='flex flex-col text-(--text-color)'>
+              <label>Sexo</label>
+              <select
+                className="bg-white px-1 rounded-sm text-black border-2 border-(--primary-color)"
+                value={filtroSexo}
+                onChange={(e) => setFiltroSexo(e.target.value)}
+              >
+                <option value="">Todos</option>
+                <option value="macho">Macho</option>
+                <option value="femea">Fêmea</option>
+              </select>
+            </div>
+
+
+            <div className='flex flex-col text-(--text-color)'>
+              <label>Porte</label>
+              <select
+                className="bg-white px-1 rounded-sm text-black border-2 border-(--primary-color)"
+                value={filtroPorte}
+                onChange={(e) => setFiltroPorte(e.target.value)}
+              >
+                <option value="">Todos</option>
+                <option value="pequeno">Pequeno</option>
+                <option value="medio">Médio</option>
+                <option value="grande">Grande</option>
+              </select>
+            </div>
+          </div>
+        </div>
       </section>
 
-      <div className='flex flex-wrap justify-center items-center gap-2'>
+      <div className="items-start flex flex-wrap justify-center gap-2 mb-4">
 
-      {petsFiltrados?.map((pet) => (
-              <Item
-                key={pet.id}
+        {petsFiltrados?.map((pet) => (
+          <Item
+            key={pet.id}
             id={pet.id}
             Nome={pet.nome}
             Img={pet.foto}
@@ -196,12 +196,14 @@ function Gerenciar() {
             valoresget={data}
             itemstart={Start}
             itemend={End}
-              />
-            ))} 
+          />
+        ))}
 
-            {petsFiltrados?.length<=0 && 
-            <p className='text-[18pt] text-(--text-color)'>Nenhum animal encontrado.</p>}
-            </div>
+
+
+        {petsFiltrados?.length <= 0 &&
+          <p className='text-[18pt] text-(--text-color)'>Nenhum animal encontrado.</p>}
+      </div>
 
 
     </>}

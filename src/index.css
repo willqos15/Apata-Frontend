@@ -13,6 +13,11 @@ html, body, #root{
   text-align: center;
 }
 
+#root{
+  margin-top: 25px;
+  min-height: 100vh;;
+}
+
 
 html {font-size: 25px;
   scroll-behavior: smooth;}

@@ -52,6 +52,7 @@
     font-family: "WDXL Lubrifont JP N", sans-serif;
     color:black;
     font-size: 24px;
+    height: 40px;
 }
 
 @media (max-width:640px) {

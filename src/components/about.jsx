@@ -3,7 +3,7 @@ import { TbDog } from "react-icons/tb";
 import { LuCat } from "react-icons/lu";
 
 export default function About() {
-    return (<section className="text-(--text-color) text-center md:w-9/12 w-full mx-auto py-8">
+    return (<section className="text-(--text-color) text-center md:w-9/12 w-full mx-auto py-8 ">
         
         <div className="flex sm:flex-row flex-col items-center justify-center gap-4 p-4">
 

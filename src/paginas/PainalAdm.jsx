@@ -52,13 +52,13 @@ function PainelAdm() {
     }, [msglogin])
 
     return (
-        <>
+        <div className='min-h-screen flex flex-col items-center justify-center'>
             {estlogin === "carregando" ?
                 <img src={loading}
                     className="pt-15 w-20 mx-auto" /> :
 
                 <>
-                    <div className="block mx-auto bg-(--bg-color2) sm:rounded-2xl py-1.25 px-5 mt-10 text-(--text-color) sm:w-60 w-full">
+                    <div className="block mx-auto bg-(--bg-color2) sm:rounded-2xl py-1.25 px-5 text-(--text-color) sm:w-60 w-full ">
 
                         <h2>Área Restrita</h2>
                         <form onSubmit={handleSubmit(login)}>
@@ -92,7 +92,7 @@ function PainelAdm() {
 
                     </div>
                 </>}
-        </>
+        </div>
 
 
     )
