@@ -16,7 +16,7 @@ function PagePrincipal() {
 
   //puxa apenas as propriedades desejadas do query
   //data são os dados pegos do QueryFn
-  const { data, isLoading, error } = useQuery({
+  const { data= [], isLoading, error } = useQuery({
     queryKey: ["itens"],
     queryFn: ListarItem
   })
@@ -25,14 +25,18 @@ function PagePrincipal() {
   const [filtroSexo, setFiltroSexo] = useState("")
   const [filtroPorte, setFiltroPorte] = useState("")
 
+  console.log("data:", data)
+console.log("isArray:", Array.isArray(data))
 
-  const petsFiltrados = data?.filter((pet) => {
-    return (
-      (filtroEspecie === "" || pet.especie === filtroEspecie) &&
-      (filtroSexo === "" || pet.sexo === filtroSexo) &&
-      (filtroPorte === "" || pet.porte === filtroPorte)
-    )
-  })
+  const petsFiltrados = Array.isArray(data)
+  ? data.filter((pet) => {
+      return (
+        (filtroEspecie === "" || pet.especie === filtroEspecie) &&
+        (filtroSexo === "" || pet.sexo === filtroSexo) &&
+        (filtroPorte === "" || pet.porte === filtroPorte)
+      )
+    })
+  : []
 
 
 
