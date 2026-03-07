@@ -1,7 +1,6 @@
 import Button from "./button";
 import { TbDog } from "react-icons/tb";
 import { LuCat } from "react-icons/lu";
-import LogoCanoa from '../img/logoct.svg'
 
 export default function About() {
     return (<section className="text-(--text-color) text-center md:w-9/12 w-full mx-auto py-8">
@@ -26,7 +25,7 @@ export default function About() {
         
 
 
-        <span className="flex sm:flex-row flex-col items-start justify-center gap-4 py-8">
+        <div className="flex sm:flex-row flex-col items-start justify-center gap-4 py-8">
             <div className="flex flex-col justify-start p-4">
                 <h2 className="text-left sm:text-xl text-base font-bold">SOBRE O SITE</h2>
                 <p className="text-left sm:text-base text-[18pt]">
@@ -38,7 +37,7 @@ export default function About() {
             </div>
 
             <LuCat className="sm:text-[300px] text-[200px] h-fit mx-auto text-(--primary-color)" />
-        </span>
+        </div>
 
 
 

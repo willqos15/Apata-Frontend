@@ -5,7 +5,7 @@ import LogoCanoa from '../img/logoct.svg'
 function MFooter() {
     return (
 
-        <div className="bottom-0 mt-8 w-full bg-(--primary-color) pt-0.5">
+        <div className="bottom-0 mb-0 pb-0 w-full bg-(--primary-color) pt-0.5">
 
             <footer className='flex lg:flex-row flex-col p-2 justify-center items-center gap-x-8 gap-y-2 text-center sm:text-[12pt] text-[12pt] bg-(--bg-color2)
         text-(--text-color) pb-4'>

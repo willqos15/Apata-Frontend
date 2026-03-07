@@ -1,4 +1,4 @@
-import Button from "./button"
+
 
 function Alert({titulo, descricao, bty,btn,fbty,fbtn, estado}) {
 

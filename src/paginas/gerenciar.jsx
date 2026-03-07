@@ -1,12 +1,11 @@
 import Item from '../components/Item'
-import { useNavigate } from 'react-router-dom'
 import { DeletaItem, EditarItem, ListarItem } from '../hookapi/fetchItem'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState, useContext } from 'react'
 import { ContextNavbar } from '../ContextNavbar'
 import Alert from '../components/alert'
-import axios from 'axios'
 import loading from '../img/load.gif'
+import Search from '../components/search'
 
 function Gerenciar() {
 
@@ -23,9 +22,10 @@ function Gerenciar() {
 
 
 
-  const navigate = useNavigate()
+
 
   const [load, setLoad] = useState(false)
+  const [busca, setBusca] = useState("")
   function Start() { setLoad(true) }
   function End() { setLoad(false) }
 
@@ -85,8 +85,26 @@ function Gerenciar() {
   // if (error) return <p>Erro ao carregar itens</p>
 
 
+  
+  const [filtroEspecie, setFiltroEspecie] = useState("")
+  const [filtroSexo, setFiltroSexo] = useState("")
+  const [filtroPorte, setFiltroPorte] = useState("")
 
-  return (<div className='flex flex-wrap'>
+
+  const petsFiltrados = Array.isArray(data)
+  ? data.filter((pet) => {
+      return (
+        (busca === "" || pet.nome.toLowerCase().includes(busca.toLowerCase())) &&
+        (filtroEspecie === "" || pet.especie === filtroEspecie) &&
+        (filtroSexo === "" || pet.sexo === filtroSexo) &&
+        (filtroPorte === "" || pet.porte === filtroPorte)
+      )
+    })
+  : []
+
+
+
+  return (<div className='min-h-275'>
 
     {load === true ? <img src={loading} className="pt-15 w-20 mx-auto" /> : <>
 
@@ -100,16 +118,70 @@ function Gerenciar() {
 
 
 
- {data?.length <= 0 && <p className="pt-10 text-xl font-bold">Nenhum item cadastrado! </p>}
+ {/* {data?.length <= 0 && <p className="pt-10 text-xl font-bold">Nenhum item cadastrado! </p>} */}
 
 
-        <section className="flex flex-wrap w-full gap-2 justify-center items-start">
+        
+        <section className="flex flex-wrap m-4 gap-2 justify-center items-start">
 
-       
-        {data?.map(pet => (
 
-          <Item
-            key={pet.id}
+           <div className='p-2 flex flex-col flex-wrap gap-2 w-fit items-center justify-center bg-(--bg-color2)'>
+
+             <p className='text-(--text-color)'>Filtrar</p>
+        <Search busca={busca} setBusca={setBusca} />
+
+        <div className='flex flex-row justify-center items-center gap-2'>
+
+              <div className='flex flex-col text-(--text-color) text-[18pt]'>
+                <label>Espécie</label>
+                <select
+                  className="bg-white text-[16pt] px-1 rounded-sm text-black border-2 border-(--primary-color) w-fit"
+                  value={filtroEspecie}
+                  onChange={(e) => setFiltroEspecie(e.target.value)}
+                >
+                  <option value="">Todas</option>
+                  <option value="cachorro">Cachorro</option>
+                  <option value="gato">Gato</option>
+                </select>
+              </div>
+
+
+              <div className='flex flex-col text-(--text-color) text-[16pt]'>
+                <label>Sexo</label>
+                <select
+                  className="bg-white text-[16pt] px-1 rounded-sm text-black border-2 border-(--primary-color)"
+                  value={filtroSexo}
+                  onChange={(e) => setFiltroSexo(e.target.value)}
+                >
+                  <option value="">Todos</option>
+                  <option value="macho">Macho</option>
+                  <option value="femea">Fêmea</option>
+                </select>
+              </div>
+
+
+              <div className='flex flex-col text-(--text-color) text-[16pt]'>
+                <label>Porte</label>
+                <select
+                  className="bg-white text-[16pt] px-1 rounded-sm text-black border-2 border-(--primary-color)"
+                  value={filtroPorte}
+                  onChange={(e) => setFiltroPorte(e.target.value)}
+                >
+                  <option value="">Todos</option>
+                  <option value="pequeno">Pequeno</option>
+                  <option value="medio">Médio</option>
+                  <option value="grande">Grande</option>
+                </select>
+              </div>
+              </div>
+            </div>
+      </section>
+
+      <div className='flex flex-wrap justify-center items-center gap-2'>
+
+      {petsFiltrados?.map((pet) => (
+              <Item
+                key={pet.id}
             id={pet.id}
             Nome={pet.nome}
             Img={pet.foto}
@@ -124,13 +196,13 @@ function Gerenciar() {
             valoresget={data}
             itemstart={Start}
             itemend={End}
-          />
+              />
+            ))} 
 
+            {petsFiltrados?.length<=0 && 
+            <p className='text-[18pt] text-(--text-color)'>Nenhum animal encontrado.</p>}
+            </div>
 
-        ))}
-
-    
-      </section>
 
     </>}
 

@@ -1,30 +1,34 @@
 @import "tailwindcss";
 
 *{box-sizing: border-box;
-outline:0;}
+outline:0;
+font-family: "WDXL Lubrifont JP N", sans-serif;}
 
 html, body, #root{
   margin: 0;
   padding: 0;
+  height: 100%;
   font-family: "WDXL Lubrifont JP N", sans-serif;
   font-weight: 400;
+  text-align: center;
 }
-
-
 
 
 html {font-size: 25px;
   scroll-behavior: smooth;}
 
-body{background-color: var(--bg-color);
-margin-top: 0px;}
+body{background-color: var(--bg-color);}
 
-body,:root,html {
-  height: 100%;
-}
 
-:root {
+#root {
   padding-top: 40px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+
+
+
 
 

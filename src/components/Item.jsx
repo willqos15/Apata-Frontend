@@ -3,7 +3,6 @@ import { useRef, useState } from "react"
 import { Controller, useForm } from 'react-hook-form'
 import { MdAddPhotoAlternate } from "react-icons/md";
 import { PatternFormat } from 'react-number-format'
-import axios from 'axios'
 import Button from "./button";
 import { IoMdMale } from "react-icons/io";
 import { IoMdFemale } from "react-icons/io";

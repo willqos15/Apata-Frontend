@@ -2,15 +2,14 @@ import Item from '../components/Item'
 import { useQuery } from '@tanstack/react-query';
 import { ListarItem } from '../hookapi/fetchItem';
 import loading from '../img/load.gif'
-import imagemvolun from '../img/QRVoluntario.jpeg'
 import imagempix from '../img/QRPIX.jpeg'
 import Hero from '../components/hero';
 import CardAside from '../components/cardaside';
 import Button from '../components/button';
-import MFooter from '../components/mfooter';
 import About from '../components/about';
 import { IoLogoWhatsapp } from "react-icons/io";
 import { useState } from 'react';
+import Search from '../components/search';
 
 function PagePrincipal() {
 
@@ -24,13 +23,13 @@ function PagePrincipal() {
   const [filtroEspecie, setFiltroEspecie] = useState("")
   const [filtroSexo, setFiltroSexo] = useState("")
   const [filtroPorte, setFiltroPorte] = useState("")
+  const [busca, setBusca] = useState("")
 
-  console.log("data:", data)
-console.log("isArray:", Array.isArray(data))
 
-  const petsFiltrados = Array.isArray(data)
+const petsFiltrados = Array.isArray(data)
   ? data.filter((pet) => {
       return (
+        (busca === "" || pet.nome.toLowerCase().includes(busca.toLowerCase())) &&
         (filtroEspecie === "" || pet.especie === filtroEspecie) &&
         (filtroSexo === "" || pet.sexo === filtroSexo) &&
         (filtroPorte === "" || pet.porte === filtroPorte)
@@ -52,6 +51,9 @@ console.log("isArray:", Array.isArray(data))
 
         {!isLoading &&
           <div className=' bg-(--bg-color2) w-fit rounded-sm p-2 mx-auto  items-center flex flex-col mb-2'>
+
+            <Search busca={busca} setBusca={setBusca} />
+            
 
 
             <div className='flex flex-row gap-2 items-center justify-center'>
@@ -104,17 +106,15 @@ console.log("isArray:", Array.isArray(data))
         }
         
 
-         {data?.length <= 0 &&
-          <p className="text-[18pt] text-(--text-color)"
-          >Nenhum animal cadastrado! </p>}
-
-        {error && <p className="text-[18pt] font-bold text-red-800"> Algo deu errado. Tente novamente.</p>}
+        
 
 
 
 
 
         {isLoading && <div className='flex flex-col justify-center items-center mx-2'>
+
+          
 
           <img src={loading} className="pt-15 w-20 h-auto" />
 
@@ -145,15 +145,19 @@ console.log("isArray:", Array.isArray(data))
       
       </aside>
 
+               {/* {data?.length <= 0 &&
+          <p className="text-[18pt] text-(--text-color)"
+          >Nenhum animal cadastrado! </p>} */}
 
-
-
+              {!error && <p className="text-[18pt] font-bold text-red-800"> Algo deu errado. Tente novamente.</p>}
 
       <section className="scroll-mt-8 md:order-3 order-4 gap-2 justify-center items-start grid xl:grid-cols-3 lg:grid-cols-2 grid-cols-1"
         id="adotar">
 
 
 
+
+        
        
 
         {!isLoading &&
@@ -199,7 +203,7 @@ console.log("isArray:", Array.isArray(data))
               <p className='font-bold text-[20pt] text-(--text-color)'>APOIE:</p>
               <p className='text-[12pt] text-left'>Doe remédios para os animais ou apoie nosso Bazar com roupas, calçados, artesanato, livros ou plantas.</p>
 
-              <Button name={<span className='flex whitespace-nowrap items-center justify-center gap-1'>Fale Conosco <IoLogoWhatsapp /></span>} size={15} />
+              <Button name={<p className='flex whitespace-nowrap items-center justify-center gap-1'>Fale Conosco <IoLogoWhatsapp /></p>} size={15} />
             </div>} />
 
 

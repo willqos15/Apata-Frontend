@@ -6,7 +6,6 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import PagePrincipal from './paginas/pageprincipal'
 import PageCadastro from './paginas/pagecadastro'
 import Gerenciar from './paginas/gerenciar';
-import PageBusca from './paginas/pagebusca';
 import { ContextNavbar } from './ContextNavbar';
 import { useState } from 'react';
 import PainelAdm from './paginas/PainalAdm';
@@ -14,17 +13,6 @@ import MFooter from './components/mfooter';
 import Prorota from './paginas/Prorota';
 import ScrollToTop from './components/ScrollToTop';
 
-
-/*PALETA DE COR
-Blue Jungle:
-#011D4D
-#034078
-#1282A2
-#E3DFDA
-#63372C
-
-
- */
 
 function App() {
 
@@ -43,7 +31,7 @@ function App() {
 
       <ScrollToTop />
 
-       <div className="flex flex-col">
+       <div className="flex flex-col h-fit">
 
       <Navbar/>
 
@@ -58,19 +46,13 @@ function App() {
         
 
         <Route path='/painel' element={<PainelAdm/>}/>
-        <Route path='/busca/' element={<PageBusca/>}/>
+       
       </Routes>
     
     <MFooter />
     </div>
     </Router>
     </ContextNavbar.Provider>
-
-
-
-    
-
-
     </>
 
     

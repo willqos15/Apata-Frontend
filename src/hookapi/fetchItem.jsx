@@ -1,5 +1,4 @@
 import axios from "axios"
-import { AxiosHeaders } from "axios"
 
 //exporta função pra usar fora desse arquivo
 export const ListarItem = async ()=>{

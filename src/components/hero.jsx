@@ -1,4 +1,4 @@
-import imagempix from '../img/QRPIX.jpeg'
+// import imagempix from '../img/QRPIX.jpeg'
 import catdog from '../img/catdog.svg'
 import Button from './button'
 
