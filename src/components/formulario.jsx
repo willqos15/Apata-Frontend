@@ -1,67 +1,86 @@
 import { Controller, useForm } from 'react-hook-form'
 import axios from 'axios'
 import { useRef, useState } from 'react'
-
+import Button from './button.jsx'
 import { PatternFormat } from 'react-number-format'
 import loading from '../img/load.gif'
 
-function Formulario({ funcao }) {
+function Formulario() {
 
   const foto = useRef(null)
+  const inputFile = useRef(null)
+
   const [estado, setEstado] = useState("1")
   const [msgfoto, setMsgFoto] = useState("")
   const [nomearq, setNomeArq] = useState()
 
+
   function errofotos() {
 
-    if (foto.current.name<=0) {
-      console.log('nao tem:', foto.current.name)
-      return setMsgFoto("erro") }
-  console.log(foto.current.name)
+    if (!foto.current) {
+      setMsgFoto("erro")
+      return true
+    }
+
     setMsgFoto("")
+    return false
   }
 
   function enviar(dados) {
 
-    errofotos()
 
-    const fotoup = new FormData()
-    
-    fotoup.append("file", foto.current)
+    if (errofotos()) return
 
     setEstado("load")
+
     const token = localStorage.getItem("token")
-    axios.post(`${import.meta.env.VITE_URLAPI}/upload`, fotoup,
-      { headers: { authorization: `Bearer ${token}` } }
-    )
-      .then((resposta) => {
-        const imagemurl = resposta.data.url
-        const imageid = resposta.data.public_idfoto
-        
-        const finalData = { ...dados, foto: imagemurl, public_idfoto:imageid}
-  
-        funcao(finalData)
-        reset()
 
-        setTimeout(() => {
-          setEstado("1")
-        }, 1000)
+    const formData = new FormData()
 
+    formData.append("nome", dados.nome)
+    formData.append("especie", dados.especie)
+    formData.append("porte", dados.porte)
+    formData.append("sexo", dados.sexo)
+    formData.append("descricao", dados.descricao)
+    formData.append("file", foto.current)
+    formData.append("contato", dados.contato)
 
+    axios.post(
+      `${import.meta.env.VITE_URLAPI}/pets`,
+      formData,
+      {
+        headers: {
+          authorization: `Bearer ${token}`
+        }
       }
-      )
-      .catch((erro) => {
-        console.log('erro: ',erro)
+    )
+      .then(() => {
+
+        reset()
+        inputFile.current.value = ""
+        foto.current = null
+        setNomeArq("")
+        setMsgFoto("")
+
+
         setTimeout(() => {
           setEstado("1")
-        }, 1000)
+        }, 800)
+
+      })
+      .catch((erro) => {
+        console.log(erro)
+
+        setTimeout(() => {
+          setEstado("1")
+        }, 800)
       })
   }
 
 
 
 
-  const { register, control,handleSubmit, formState: { errors }, reset } = useForm({ mode: "onChange" })
+  const { register, control, handleSubmit, formState: { errors }, reset } = useForm({ mode: "onChange" })
 
   /*
 register - linka o input ao React Hook Form (essencial)
@@ -79,90 +98,140 @@ clearErrors - limpa erros
 */
   function Scrollar(e) {
 
-    setTimeout(() => {
-      e.target.scrollIntoView(
-        { behavior: "smooth", block: "center" })
-    }
-      , 300)
+    // setTimeout(() => {
+    //   e.target.scrollIntoView(
+    //     { behavior: "smooth", block: "center" })
+    // }
+    //   , 300)
 
   }
 
   function uploading(e) {
-    foto.current = e.target.files[0]
-    if (foto.current) {
-      setNomeArq(foto.current.name)
-    }
-    errofotos()
+
+    const arquivo = e.target.files[0]
+
+    if (!arquivo) return
+
+    foto.current = arquivo
+    setNomeArq(arquivo.name)
+    setMsgFoto("")
   }
+
+
+
+
+
+
+
+
+
+
+
 
   return (<>
 
 
     {estado === "load" && <img src={loading}
-                className="pt-15 w-20"/>}
+      className="pt-15 w-20" />}
 
 
-    <form onSubmit={handleSubmit(enviar)}  className="flex flex-col max-w-100 min-w-50 px-5 my-10 mx-auto justify-start rounded-2xl bg-(--primary-color)">
+    <form onSubmit={handleSubmit(enviar)} className="flex flex-col max-w-72 px-5 my-10 mx-auto justify-start rounded-2xl bg-(--bg-color2)">
       {estado === "1" &&
         <>
 
-          <label className="formlabel"> Nome do item perdido:</label>
-          <input className='bg-white rounded-md px-2' {...register("nome", { required: true })} type="text" placeholder="Exemplo: Lápis, borracha e etc." onFocus={Scrollar} />
+          <label className="formlabel"> Nome do animal:</label>
+          <input className='input' {...register("nome", { required: true })} type="text" placeholder="Nome do animal." onFocus={Scrollar} />
           {errors.nome && <p className="formerro">Campo obrigatório</p>}
 
+
           <label className="formlabel"> Carregue uma imagem:</label>
-          <div className="flex justify-center items-center">
-
-            <button className="rounded-xl p-2.5 bg-(--secondary-color) border-0 text-white font-bold cursor-pointer transition duration-500 text-2xs font-sans" onClick={()=>{foto.current.click()}}> Escolha sua imagem </button>
-            
-            <input  type='file' onChange={uploading} onFocus={Scrollar} ref={foto} className="hidden"/>
 
 
-            <span className="text-base pl-2.5 text-white">
-              {nomearq ? nomearq : ""}
-            </span>
-          </div>
+          {/* <button className="rounded-xl p-2.5 bg-(--secondary-color) border-0 text-white font-bold cursor-pointer transition duration-500 text-2xs font-sans" onClick={()=>{foto.current.click()}}> Escolha sua imagem </button> */}
+
+          <Button
+            name="Escolha sua imagem"
+            func={() => inputFile.current.click()}
+            size="15"
+          />
+
+
+
+
+          <input
+            type="file"
+            ref={inputFile}
+            onChange={uploading}
+            onFocus={Scrollar}
+            className="hidden"
+            accept="image/*"
+          />
+
+          <p className=" pl-2.5 text-[16px]  text-(--text-color)">
+            {nomearq ? nomearq : ""}
+          </p>
+
           {msgfoto === "erro" && <p className="formerro">Campo obrigatório</p>}
 
+          <label className="formlabel">Espécie</label>
+          <select className="input" {...register("especie", { required: true })}>
+            <option value="">Selecione</option>
+            <option value="cachorro">Cachorro</option>
+            <option value="gato">Gato</option>
+          </select>
+          {errors.especie && <p className="formerro">Campo obrigatório</p>}
 
-          <label className="formlabel"> Descrição:</label>
-          <textarea className='bg-white rounded-md px-2 min-h-8 max-h-20' {...register("descricao", { required: true })} rows={2} placeholder='Descreva a aparência, cor, tamanho, detalhes e etc.' onFocus={Scrollar} />
+
+
+          <label className="formlabel">Porte</label>
+          <select className="input" {...register("porte", { required: true })}>
+            <option value="">Selecione</option>
+            <option value="pequeno">Pequeno</option>
+            <option value="medio">Médio</option>
+            <option value="grande">Grande</option>
+          </select>
+          {errors.porte && <p className="formerro">Campo obrigatório</p>}
+
+          <label className="formlabel">Sexo</label>
+          <select className="input" {...register("sexo", { required: true })}>
+            <option value="">Selecione</option>
+            <option value="macho">Macho</option>
+            <option value="femea">Fêmea</option>
+          </select>
+          {errors.sexo && <p className="formerro">Campo obrigatório</p>}
+
+          <label className="formlabel"> Sobre:</label>
+          <textarea className='textarea max-h-16' {...register("descricao", { required: true })} rows={2} placeholder='Idade, castrado, deficiência e etc.' onFocus={Scrollar} />
           {errors.descricao && <p className="formerro">Campo obrigatório</p>}
 
 
-          <label className="formlabel"> Local onde foi perdido:</label>
-          <input className='bg-white rounded-md px-2' {...register("local", { required: true })} type="text" placeholder='Exemplo: Pátio, Sala e etc.' onFocus={Scrollar} />
-          {errors.local && <p className="formerro">Campo obrigatório</p>}
-
-          <label className="formlabel"> Proprietário:</label>
-          <input className='bg-white rounded-md px-2' {...register("proprietario", { required: true })} type="text" placeholder='Nome completo.' onFocus={Scrollar} />
-          {errors.proprietario && <p className="formerro">Campo obrigatório</p>}
-
-          <label className="formlabel"> Contato (Whatsapp):</label>
 
 
+          <label className="formlabel"> Contato:</label>
           <Controller
             name="contato"
             control={control}
-            
-            rules={{ required: "Campo obrigatório",
-              validate: valor=>{
+
+            rules={{
+              required: "Campo obrigatório",
+              validate: valor => {
                 //uso de REGEX /D retira tudo que não for número e g para aplicat a todos carecteres(global) e substitui por vazio ''
-                const tirasimbolo = valor.replace(/\D/g,'')
+                const tirasimbolo = valor.replace(/\D/g, '')
                 return tirasimbolo.length === 13 || "O número precisa ter 11 dígitos"
-              }}}
+              }
+            }}
             render={({ field }) => (
 
               <PatternFormat
                 {...field}
-                className='bg-white rounded-md px-2'
+                className='input'
                 format='+55 (##) # ####-####'
                 placeholder='(XX) X XXXX-XXXX'
                 onFocus={Scrollar}
                 inputMode='numeric'
-                onValueChange={(valor)=>{
+                onValueChange={(valor) => {
                   field.onChange(valor.value)
-                  
+
                 }}
               />
 
@@ -172,7 +241,9 @@ clearErrors - limpa erros
 
           {errors.contato && <p className="formerro">{errors.contato.message}</p>}
 
-          <button type="submit" onClick={errofotos} className="my-5 mx-auto text-7.5 rounded-xl p-2.5 bg-(--secondary-color) border-0 text-white font-bold cursor-pointer transition duration-500 text-2xs font-sans">Enviar</button>
+          {/* <button type="submit" onClick={errofotos} className="my-5 mx-auto text-7.5 rounded-xl p-2.5 bg-(--secondary-color) border-0 text-white font-bold cursor-pointer transition duration-500 text-2xs font-sans">Enviar</button> */}
+          <br />
+          <Button name="Salvar" type="submit" size="20" />
 
         </>
       }

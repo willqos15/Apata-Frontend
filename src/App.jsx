@@ -12,6 +12,7 @@ import { useState } from 'react';
 import PainelAdm from './paginas/PainalAdm';
 import MFooter from './components/mfooter';
 import Prorota from './paginas/Prorota';
+import ScrollToTop from './components/ScrollToTop';
 
 
 /*PALETA DE COR
@@ -40,6 +41,10 @@ function App() {
     <ContextNavbar.Provider value={{itens,setItens,barraBusca,setBarraBusca,adm,setAdm}}>
     <Router> {/*Router envolve TODA PAGINA */}
 
+      <ScrollToTop />
+
+       <div className="flex flex-col">
+
       <Navbar/>
 
       <Routes>
@@ -56,7 +61,8 @@ function App() {
         <Route path='/busca/' element={<PageBusca/>}/>
       </Routes>
     
-    
+    <MFooter />
+    </div>
     </Router>
     </ContextNavbar.Provider>
 

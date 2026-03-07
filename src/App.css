@@ -51,7 +51,12 @@
     border: 2px solid var(--primary-color);
     font-family: "WDXL Lubrifont JP N", sans-serif;
     color:black;
-    font-size: 16px;
+    font-size: 24px;
+}
+
+@media (max-width:640px) {
+  .input, .textarea{font-size: 18px;}
+  
 }
 
 .plogin {margin: auto;
@@ -61,50 +66,18 @@ color: #DA7A4A;
 font-weight: bold;}
 
 #root {
-  max-width: 100vw;
-  margin: -10 auto;
+  width: 100%;
+
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+html, body {
+  margin: 0;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
+
 
 input, button, textarea{
   touch-action: manipulation;
-  
 }
 
 
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}

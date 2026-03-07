@@ -1,7 +1,7 @@
 import { useContext, useState} from "react"
 import { ContextNavbar } from "../ContextNavbar"
 import Item from "../components/Item"
-import { useNavigate } from "react-router"
+import { useNavigate } from 'react-router-dom'
 
 
 function PageBusca(){

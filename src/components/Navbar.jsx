@@ -41,22 +41,37 @@ function Navbar() {
   }
 
 
+function telaadm() {
+  const token = localStorage.getItem("token")
 
-  function telaadm() {
-    const token = localStorage.getItem("token")
-    if (!token) return navigate('./painel')
-    axios.get(`${import.meta.env.VITE_URLAPI}/testelogin`,
-      { headers: { authorization: `Bearer ${token}` } })
-      .then(() => {
-        navigate('/gerenciar')
-        setAdm(true)
-      })
-      .catch(() => {
-        navigate('/painel')
-        setAdm(false)
-      })
-
+  if (!token) {
+    navigate("/painel")
+    return
   }
+
+  axios.get(`${import.meta.env.VITE_URLAPI}/usuarios`, {
+    headers: {
+      authorization: `Bearer ${token}`
+    }
+  })
+  .then(() => {
+    navigate("/gerenciar")
+    setAdm(true)
+  })
+  .catch(() => {
+    localStorage.removeItem("token")
+    navigate("/painel")
+    setAdm(false)
+  })
+}
+
+useEffect(() => {
+  const token = localStorage.getItem("token")
+
+  if (token) {
+    setAdm(true)
+  }
+}, [])
 
   function inputpesquisa(valor) {
     setBarraBusca(valor.target.value)
@@ -81,7 +96,7 @@ function Navbar() {
   return (
     <>
 
-      <header className="flex fixed top-0 justify-between items-center w-screen max-h-15 bg-white z-100 px-4 pr-8">
+      <header className="flex fixed top-0 justify-between items-center w-full max-h-16 bg-white z-100 px-4 sm:pr-8 ">
 
         <div onClick={paginainicial} className="flex flex-row justify-center items-center gap-x-1">
           <img src={LogoApata} className="h-5 w-auto" />

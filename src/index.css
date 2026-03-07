@@ -7,21 +7,24 @@ html, body, #root{
   margin: 0;
   padding: 0;
   font-family: "WDXL Lubrifont JP N", sans-serif;
-  font-weight: 400px;
+  font-weight: 400;
 }
 
 
 
-html {font-size: 25pt;}
+
+html {font-size: 25px;
+  scroll-behavior: smooth;}
 
 body{background-color: var(--bg-color);
 margin-top: 0px;}
 
+body,:root,html {
+  height: 100%;
+}
 
 :root {
-  padding-top: 60px;
-  
-  
+  padding-top: 40px;
 }
 
 

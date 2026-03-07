@@ -1,9 +1,45 @@
+import { AiFillInstagram } from "react-icons/ai";
+import { MdEmail } from "react-icons/md";
+import LogoCanoa from '../img/logoct.svg'
 
 function MFooter() {
-    return(<div className="absolute bottom-0 w-full bg-[rgba(25,0,74,0.08)] text-gray-400">
+    return (
 
-    <footer className='className="text-xxs p-0.5"'>Site desenvolvido por William Queiroz @2025 </footer>
-    </div>)
+        <div className="bottom-0 mt-8 w-full bg-(--primary-color) pt-0.5">
+
+            <footer className='flex lg:flex-row flex-col p-2 justify-center items-center gap-x-8 gap-y-2 text-center sm:text-[12pt] text-[12pt] bg-(--bg-color2)
+        text-(--text-color) pb-4'>
+
+                <div className="flex lg:flex-col gap-x-1">
+                    <p className="font-bold">APATA - Altamira Pará</p>
+                    <p>Av. Tancredo Neves, 3060. 683712-71</p>
+                </div>
+
+                <div className="flex lg:flex-col flex-row gap-1">
+                    <div className="flex items-center justify-center">
+                       <a href="https://www.instagram.com/apata_altamira/" target="_blank" className="flex items-center hover:text-(--text-color2) transition duration-300"> <AiFillInstagram /> Instagram</a>
+                        
+                        <a href="mailto:apatadealtamira@gmail.com" target="_blank" className="flex items-center hover:text-(--text-color2) transition duration-300">
+                            <MdEmail className="ml-2"/>
+                            apatadealtamira@gmail.com</a>
+                    </div>
+                </div>
+
+                <a className="flex items-center hover:text-(--text-color2) transition duration-300"
+                href="https://canoatech.vercel.app/" target="_blank" >
+                    <img src={LogoCanoa} className="h-8 w-auto mr-1"/>
+                    <div className="flex flex-col items-start text-left">
+                    
+                    <p className="font-bold">Site desenvolvido pela Canoa Tech</p> 
+                    <p>Colaboradores: William Queiroz e Fernando Macedo</p>
+                    </div>
+                    
+                </a>
+
+
+            </footer>
+
+        </div>)
 }
 
 export default MFooter

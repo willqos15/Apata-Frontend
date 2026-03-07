@@ -1,5 +1,5 @@
 import axios from "axios"
-import { useNavigate } from "react-router"
+import { useNavigate } from 'react-router-dom'
 import { useForm } from "react-hook-form"
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Loginadm } from "../hookapi/fetchItem"
@@ -59,7 +59,7 @@ function PainelAdm() {
                     className="pt-15 w-20 mx-auto" /> :
 
                 <>
-                    <div className="block mx-auto bg-(--bg-color2) rounded-2xl py-1.25 px-5 mt-10 text-(--text-color) w-60">
+                    <div className="block mx-auto bg-(--bg-color2) sm:rounded-2xl py-1.25 px-5 mt-10 text-(--text-color) sm:w-60 w-full">
 
                         <h2>Área Restrita</h2>
                         <form onSubmit={handleSubmit(login)}>
@@ -72,8 +72,12 @@ function PainelAdm() {
 
                                 <div className="flex flex-col w-full justify-center items-center gap-2">
 
-                                    <input className="input" {...register("password", { required: true })} type="password"></input>
-                                    <input className="input" {...register("email", { required: true })} type="text" />
+<input className="input" {...register("email", { required: true })} type="text" />
+
+                                    <input className="input" {...register("password", { required: true })} type="password">
+                                    </input>
+
+                                    
                                 </div>
                             </div>
 
@@ -81,7 +85,7 @@ function PainelAdm() {
                             {msglogin === "erro" && <p className="plogin"> Login ou Senha incorreto!</p>}
                             {mutationLogin.isError && <p className="plogin">Login ou Senha incorreto!</p>}
 
-                            <Button name="Enviar" type="submit" className="text-[10pt]" />
+                            <Button name="Entrar" type="submit" size={15} className="text-[10pt] mt-4" />
 
 
                         </form>

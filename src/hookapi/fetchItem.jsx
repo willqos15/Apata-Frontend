@@ -5,25 +5,37 @@ import { AxiosHeaders } from "axios"
 export const ListarItem = async ()=>{
     //pega domente a propriedade {data} retornada do axios
     
-    const {data} = await axios.get(`${import.meta.env.VITE_URLAPI}/perdidos`)
+    const {data} = await axios.get(`${import.meta.env.VITE_URLAPI}/pets`)
     return data
 }
 
-export const EditarItem = async (id, dados)=>{
-    const token = localStorage.getItem("token")
-    const {data} = await  axios.put(`${import.meta.env.VITE_URLAPI}/perdidos/${id}`, dados, 
-        {headers: {authorization: `Bearer ${token}`}})
-    return data
+// EDITAR (com ou sem imagem)
+export const EditarItem = async (id, dados) => {
+  const token = localStorage.getItem("token")
+
+  const config = {
+    headers: {
+      authorization: `Bearer ${token}`
+    }
+  }
+
+  const { data } = await axios.put(
+    `${import.meta.env.VITE_URLAPI}/pets/${id}`,
+    dados,
+    config
+  )
+
+  return data
 }
 
 export const DeletaItem = async (id)=> {
     const token = localStorage.getItem("token")
-    const {data} = await axios.delete(`${import.meta.env.VITE_URLAPI}/perdidos/${id}`,
+    const {data} = await axios.delete(`${import.meta.env.VITE_URLAPI}/pets/${id}`,
         {headers: {authorization: `Bearer ${token}`}})
     return data
 }
 
 export const Loginadm = async (dados) => {
-    const {data} = await axios.post(`${import.meta.env.VITE_URLAPI}/testelogin`,dados)
+    const {data} = await axios.post(`${import.meta.env.VITE_URLAPI}/login`,dados)
     return data
 }
