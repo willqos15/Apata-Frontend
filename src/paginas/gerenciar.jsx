@@ -110,7 +110,7 @@ function Gerenciar() {
 
 
       <Alert titulo={"AVISO"}
-        descricao={`Tem certeza que deseja excluir o ítem "${delnome}"?`}
+        descricao={`Tem certeza que deseja excluir o "${delnome}"?`}
         bty={"Sim"} fbty={deletar}
         btn={"Não"} fbtn={() => setPoup(false)}
         estado={poup}
