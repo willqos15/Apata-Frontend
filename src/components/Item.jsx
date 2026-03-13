@@ -119,32 +119,32 @@ function Item({
 
     function formatarTelefone(numero) {
 
-        const n = numero.replace(/\D/g, '')
+  const n = numero.replace(/\D/g, '')
 
-        if (n.length === 13) {
-            return `(${n.slice(2, 4)}) ${n.slice(4, 9)}-${n.slice(9)}`
-        }
+  if (n.length === 11) {
+    return `(${n.slice(0, 2)}) ${n.slice(2, 7)}-${n.slice(7)}`
+  }
 
-        return numero
-    }
+  return numero
+}
 
 
 
     return (<>
 
 
-        <div className="flex flex-col rounded-t-[20px] transition-all duration-500 text-[20px]">
+        <div className="flex flex-col min-[400px]:rounded-t-[20px] rounded-0 transition-all duration-500 text-[20px] min-[400px]:w-30 w-full">
 
 
 
             <div onClick={() => {
                 if (!admin) { setAberto(!aberto) }
                 if (admin) { editar() }
-            }} className="cursor-pointer select-none">
+            }} className="cursor-pointer select-none min-[400px]:w-fit w-full">
 
-                <div className="bg-(--primary-color) rounded-t-xl transition w-30 duration-500">
+                <div className="bg-(--primary-color) min-[400px]:rounded-t-xl rounded-0 transition min-[400px]:w-fit w-full duration-500">
 
-                    <div className="flex justify-center items-center py-2 relative">
+                    <div className="flex justify-center items-center py-2 relative mx-4">
 
                         {(admin && editando) &&
                             <button className="absolute bg-transparent border-0 text-white text-12.5 cursor-pointer transitionduration-200 z-3 text-4xl "
@@ -190,8 +190,8 @@ function Item({
 
             {/*VERSÃO BOTÃO PARA USUÁRIO GERAL*/}
             {!admin ?
-                <div className={`w-30 bg-(--bg-color2) text-(--text-color2) px-2 py-0 pt-0 flex flex-col ease-linear transition-opacity ${aberto ? "max-h-40 duration-500 opacity-100 overflow-visible" : " max-h-0  duration-0 overflow-hidden"}`}>
-                {/* <div className={`w-30 bg-(--bg-color2) text-(--text-color2) p-2 pt-0 flex flex-col ease-linear transition-opacity ${aberto ? "max-h-40 duration-500 opacity-100 overflow-visible" : " max-h-0  duration-0  opacity-0 overflow-hidden"}`}> */}
+                <div className={`w-full bg-(--bg-color2) text-(--text-color2) px-2 py-0 pt-0 flex flex-col ease-linear transition-opacity ${aberto ? "max-h-40 duration-500 opacity-100 overflow-visible" : " max-h-0  duration-0 overflow-hidden"}`}>
+                    {/* <div className={`w-30 bg-(--bg-color2) text-(--text-color2) p-2 pt-0 flex flex-col ease-linear transition-opacity ${aberto ? "max-h-40 duration-500 opacity-100 overflow-visible" : " max-h-0  duration-0  opacity-0 overflow-hidden"}`}> */}
 
                     <label className="font-bold text-[18px]">
                         {especie === "cachorro" && sexo === "macho" && " Cachorro de "}
@@ -200,18 +200,18 @@ function Item({
                         {especie === "gato" && sexo === "macho" && "Gato de "}
 
                         porte {porte === "medio" ? "médio" : porte}</label>
-                    <p className="text-left">{Descricao}.</p>
+                    <p className="text-center text-[18px]">{Descricao}.</p>
 
 
 
                     <label className="font-bold pt-4 text-(--text-color)">Entre em contato:</label>
                     <a
-  href={`https://wa.me/${contato}?text=${encodeURIComponent(
-    `Quero saber mais sobre o ${especie} ${Nome}`
-  )}`}
-  target="_blank"
-  rel="noopener noreferrer"
->
+                        href={`https://wa.me/55${contato}?text=${encodeURIComponent(
+                            `Quero saber mais sobre o ${especie} ${Nome}`
+                        )}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
                         <Button name={formatarTelefone(contato)} /></a>
 
                 </div>
@@ -219,7 +219,7 @@ function Item({
 
             {/*VERSÃO FORMULÁRIO PARA EDITAR COMO ADIMINISTRADOR*/}
             {admin ?
-                <div className={`w-30 bg-(--bg-color2) text-(--text-color2) ease-linear transition-opacity ${editando ? "max-h-fit duration-500 opacity-100" : "max-h-0 duration-0 overflow-hidden opacity-0"}`}>
+                <div className={`p-2 w-full bg-(--bg-color2) text-(--text-color2) ease-linear transition-opacity ${editando ? "max-h-fit duration-500 opacity-100" : "max-h-0 duration-0 overflow-hidden opacity-0"}`}>
 
                     <form onSubmit={handleSubmit(form)}>
 
@@ -305,7 +305,7 @@ function Item({
                                     if (!valor) return "Campo obrigatório"
 
                                     const tirasimbolo = valor.replace(/\D/g, '')
-                                    return tirasimbolo.length === 13 || "Número inválido"
+                                    return tirasimbolo.length === 11 || "Número inválido"
                                 }
 
                             }}
@@ -315,7 +315,8 @@ function Item({
                                     {...field}
                                     value={field.value}
                                     className="input"
-                                    format='+55 (##) # ####-####'
+                                    prefix="+55 "
+                                    format="(##) # ####-####"
                                     placeholder='(XX) X XXXX-XXXX'
                                     onFocus={Scrollar}
                                     inputMode='numeric'
@@ -331,7 +332,7 @@ function Item({
                         {msg}
 
 
-                        <Button name="Salvar" type="submit"
+                        <Button name="Salvar" type="submit" className="mt-2 mx-auto"
                         // func={() => {
 
                         //     setMsg(trigger())

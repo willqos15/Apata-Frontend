@@ -13,7 +13,7 @@ export default function About() {
             <h2 className="sm:text-xl text-base font-bold text-left">SOBRE NÓS</h2>
 
             <p className="text-left sm:text-base text-[18pt]">
-                Somos uma filial da Associação Protetora dos Animais para Tratamento e Adoção de Altamira, Pará.
+                Somos da Associação de proteção dos animais e do meio ambiente de Altamira Pará.
                 Atuamos de forma voluntária, sem fins lucrativos.</p>
                 </div>
         </div>

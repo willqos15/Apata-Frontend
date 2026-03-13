@@ -10,7 +10,7 @@ function MFooter() {
             <footer className='flex lg:flex-row flex-col p-2 justify-center items-center gap-x-8 gap-y-2 text-center sm:text-[12pt] text-[12pt] bg-(--bg-color2)
         text-(--text-color) pb-4'>
 
-                <div className="flex lg:flex-col gap-x-1">
+                <div className="flex flex-col gap-x-1">
                     <p className="font-bold">APATA - Altamira Pará</p>
                     <p>Av. Tancredo Neves, 3060. 683712-71</p>
                 </div>
@@ -25,16 +25,19 @@ function MFooter() {
                     </div>
                 </div>
 
-                <a className="flex items-center hover:text-(--text-color2) transition duration-300"
-                href="https://canoatech.vercel.app/" target="_blank" >
+                <div className="flex flex-col items-center "
+                 >
+                    <a className="flex items-center hover:text-(--text-color2) transition duration-300" href="https://canoatech.vercel.app/" target="_blank">
                     <img src={LogoCanoa} className="h-8 w-auto mr-1"/>
-                    <div className="flex flex-col items-start text-left">
                     
-                    <p className="font-bold">Site desenvolvido pela Canoa Tech</p> 
-                    <p>Colaboradores: William Queiroz e Fernando Macedo</p>
-                    </div>
                     
-                </a>
+                    <p className="font-bold">Site desenvolvido pela Canoa Tech</p> </a>
+                    <p>Colaboradores: 
+                        <a href="https://github.com/willqos15" target ="_blank" className="hover:text-(--text-color2) transition duration-300"> William Queiroz</a>  e 
+                        <a href="https://github.com/FerMacedo" target ="_blank" className="hover:text-(--text-color2) transition duration-300" > Fernando Macedo</a> </p>
+                    
+                    
+                </div>
 
 
             </footer>

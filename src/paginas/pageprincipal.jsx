@@ -47,9 +47,9 @@ const petsFiltrados = Array.isArray(data)
      
 
       <div className='w-full [@media(min-width:1100px)]:order-1 order-3'>
-        <p className='text-(--text-color) '>Adotar um animal:</p>
+        <p className='text-(--text-color)'>Adotar um animal:</p>
 
-        {!isLoading &&
+        {!isLoading && !error &&
           <div className=' bg-(--bg-color2) w-fit  rounded-sm p-4 mx-auto  items-center flex flex-col mb-2'>
 
             <Search busca={busca} setBusca={setBusca} />
@@ -111,7 +111,7 @@ const petsFiltrados = Array.isArray(data)
 
 
       <aside className=" [@media(min-width:1100px)]:order-2 order-1 w-fit">
-        <div className='scroll-mt-8 sticky w-fit top-8 flex flex-col gap-2 px-2' id="doar">
+        <div className='scroll-mt-8 sticky sm:w-fit w-full top-8 flex flex-col gap-2 px-2' id="doar">
           <CardAside title="PIX SOLIDÁRIO"
             image={imagempix} content={<><p className='text-[12pt] font-bold'>19.552.047/0001-43</p>
               <p className='text-[10pt]'>Sua contribuição faz a diferença!</p></>} text="" />
@@ -197,7 +197,9 @@ const petsFiltrados = Array.isArray(data)
               <p className='font-bold text-[20pt] text-(--text-color)'>APOIE:</p>
               <p className='text-[12pt] text-left'>Doe remédios para os animais ou apoie nosso Bazar com roupas, calçados, artesanato, livros ou plantas.</p>
 
+<a href="https://wa.me/5593991185009" target='_blank'>
               <Button name={<p className='flex whitespace-nowrap items-center justify-center gap-1'>Fale Conosco <IoLogoWhatsapp /></p>} size={15} />
+              </a>
             </div>} />
 
 
