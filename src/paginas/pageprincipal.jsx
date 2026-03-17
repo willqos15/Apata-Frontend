@@ -11,6 +11,7 @@ import { IoLogoWhatsapp } from "react-icons/io";
 import { useState } from 'react';
 import Search from '../components/search';
 
+
 function PagePrincipal() {
 
   //puxa apenas as propriedades desejadas do query
@@ -24,6 +25,7 @@ function PagePrincipal() {
   const [filtroSexo, setFiltroSexo] = useState("")
   const [filtroPorte, setFiltroPorte] = useState("")
   const [busca, setBusca] = useState("")
+  
 
 
 const petsFiltrados = Array.isArray(data)
@@ -39,14 +41,13 @@ const petsFiltrados = Array.isArray(data)
 
 
 
-  return (<div> <Hero />
+  return (<div> 
 
-    <About />
-
+    
     <div className="flex flex-wrap flex-row gap-1 items-start justify-center w-full overflow-x-hidden">
      
 
-      <div className='w-full [@media(min-width:1100px)]:order-1 order-3'>
+      <div className='w-full [@media(min-width:1100px)]:order-1 order-1'>
         <p className='text-(--text-color)'>Adotar um animal:</p>
 
         {!isLoading && !error &&
@@ -106,11 +107,12 @@ const petsFiltrados = Array.isArray(data)
         }
         
 
+
       </div>
       
 
 
-      <aside className=" [@media(min-width:1100px)]:order-2 order-1 w-fit">
+      <aside className=" [@media(min-width:1100px)]:order-2 order-3 w-fit">
         <div className='scroll-mt-8 sticky sm:w-fit w-full top-8 flex flex-col gap-2 px-2' id="doar">
           <CardAside title="PIX SOLIDÁRIO"
             image={imagempix} content={<><p className='text-[12pt] font-bold'>19.552.047/0001-43</p>
@@ -132,7 +134,7 @@ const petsFiltrados = Array.isArray(data)
 
               
 
-      <section className="scroll-mt-8  [@media(min-width:1100px)]:order-3 order-4 gap-2  xl:w-97.5 items-start flex flex-wrap justify-center mb-4"
+      <section className="scroll-mt-8  [@media(min-width:1100px)]:order-3 order-2 gap-2  xl:w-97.5 items-start flex flex-wrap justify-center mb-4"
         id="adotar">
 
 
@@ -211,6 +213,12 @@ const petsFiltrados = Array.isArray(data)
 
 
     </div>
+
+
+    <Hero />
+
+    <About />
+
 
     </div>
     )

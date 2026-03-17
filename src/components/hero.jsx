@@ -3,7 +3,7 @@ import catdog from '../img/catdog.svg'
 import Button from './button'
 
 export default function Hero () {
-    return(<div className="h-fit w-full bg-(--bg-color2) flex lg:flex-row flex-col px-4 gap-4  items-center justify-center">
+    return(<div className="h-fit w-full bg-(--bg-color2) flex lg:flex-row flex-col px-4 mt-8 gap-4  items-center justify-center">
 
         <div className='lg:order-1 order-2 text-wrap text-sm text-left flex flex-col justify-end'>
         <p className='sm:text-2xl text-sm text-(--text-color)'>Adote um amigo. Mude uma vida</p>

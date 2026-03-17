@@ -6,6 +6,7 @@ import { PatternFormat } from 'react-number-format'
 import Button from "./button";
 import { IoMdMale } from "react-icons/io";
 import { IoMdFemale } from "react-icons/io";
+import Poup from "./poup";
 
 function Item({
     Nome,
@@ -128,9 +129,12 @@ function Item({
   return numero
 }
 
+const [zoom,setZoom] = useState(false)
 
 
     return (<>
+    <Poup show={zoom} setShow={setZoom} titulo={`foto ${Nome}`} 
+    conteudo={<img src={Img} className="w-full h-[calc(100vh-100px)] object-contain"/>}/>
 
 
         <div className="flex flex-col min-[400px]:rounded-t-[20px] rounded-0 transition-all duration-500 text-[20px] min-[400px]:w-30 w-full">
@@ -157,7 +161,9 @@ function Item({
                         }
 
                         <img src={fotoup ? fotoup : Img} alt={`um ${especie} ${sexo} ${porte}`}
-                            className={`${editando ? "brightness-75" : "brightness-100"} w-24 h-24 object-cover border-8 border-(--bg-color2) rounded-full mx-auto transition-all duration-500 bg-white`} />
+                            onClick={()=>setZoom(true)}
+                            className={`${editando ? "brightness-75" : "brightness-100"}
+                            ${aberto ? "object-contain rounded-none " : "object-cover rounded-full "} w-24 h-24  hover:object-contain rounded-full border-8 border-(--bg-color2)  hover:rounded-none mx-auto bg-white`} />
 
                     </div>
 
