@@ -124,6 +124,13 @@ const petsFiltrados = Array.isArray(data)
             text="Faça parte da APATA."
             content={<a href='https://chat.whatsapp.com/CwqD6s5Ft5C9ITPPsE1V7q' target='_blank' ><Button name={<div className='flex whitespace-nowrap items-center justify-center gap-1'>Entrar no grupo <IoLogoWhatsapp /></div>} size={15} />  </a>}
           />
+
+           <CardAside title="ASSOCIE-SE"
+            // image={imagemvolun}
+            text="Mensalidade mínima de R$30,00."
+            content={<a href='https://chat.whatsapp.com/JV5q2ig541o5vcenZdzhZl?mode=gi_t' target='_blank' ><Button name={<div className='flex whitespace-nowrap items-center justify-center gap-1'>Entrar no grupo <IoLogoWhatsapp /></div>} size={15} />  </a>}
+          />
+          
         </div>
       
       </aside>
