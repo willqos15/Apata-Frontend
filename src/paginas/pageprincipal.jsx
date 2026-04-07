@@ -10,13 +10,15 @@ import About from '../components/about';
 import { IoLogoWhatsapp } from "react-icons/io";
 import { useState } from 'react';
 import Search from '../components/search';
+import { CiPill } from 'react-icons/ci';
+import { FaTshirt } from 'react-icons/fa';
 
 
 function PagePrincipal() {
 
   //puxa apenas as propriedades desejadas do query
   //data são os dados pegos do QueryFn
-  const { data= [], isLoading, error } = useQuery({
+  const { data = [], isLoading, error } = useQuery({
     queryKey: ["itens"],
     queryFn: ListarItem
   })
@@ -25,11 +27,11 @@ function PagePrincipal() {
   const [filtroSexo, setFiltroSexo] = useState("")
   const [filtroPorte, setFiltroPorte] = useState("")
   const [busca, setBusca] = useState("")
-  
 
 
-const petsFiltrados = Array.isArray(data)
-  ? data.filter((pet) => {
+
+  const petsFiltrados = Array.isArray(data)
+    ? data.filter((pet) => {
       return (
         (busca === "" || pet.nome.toLowerCase().includes(busca.toLowerCase())) &&
         (filtroEspecie === "" || pet.especie === filtroEspecie) &&
@@ -37,15 +39,15 @@ const petsFiltrados = Array.isArray(data)
         (filtroPorte === "" || pet.porte === filtroPorte)
       )
     })
-  : []
+    : []
 
 
 
-  return (<div> 
+  return (<div>
 
-    
+
     <div className="flex flex-wrap flex-row gap-1 items-start justify-center w-full overflow-x-hidden">
-     
+
 
       <div className='w-full [@media(min-width:1100px)]:order-1 order-1'>
         <p className='text-(--text-color)'>Adotar um animal:</p>
@@ -54,7 +56,7 @@ const petsFiltrados = Array.isArray(data)
           <div className=' bg-(--bg-color2) w-fit  rounded-sm p-4 mx-auto  items-center flex flex-col mb-2'>
 
             <Search busca={busca} setBusca={setBusca} />
-            
+
 
 
             <div className='flex flex-row gap-2 w-full items-center justify-center sm:text-[18pt] text-[12pt]'>
@@ -101,15 +103,15 @@ const petsFiltrados = Array.isArray(data)
                 </select>
               </div>
             </div>
-            
+
           </div>
 
         }
-        
+
 
 
       </div>
-      
+
 
 
       <aside className=" [@media(min-width:1100px)]:order-2 order-3 w-fit">
@@ -125,21 +127,21 @@ const petsFiltrados = Array.isArray(data)
             content={<a href='https://chat.whatsapp.com/CwqD6s5Ft5C9ITPPsE1V7q' target='_blank' ><Button name={<div className='flex whitespace-nowrap items-center justify-center gap-1'>Entrar no grupo <IoLogoWhatsapp /></div>} size={15} />  </a>}
           />
 
-           <CardAside title="ASSOCIE-SE"
+          <CardAside title="ASSOCIE-SE"
             // image={imagemvolun}
             text="Mensalidade mínima de R$30,00."
             content={<a href='https://chat.whatsapp.com/JV5q2ig541o5vcenZdzhZl?mode=gi_t' target='_blank' ><Button name={<div className='flex whitespace-nowrap items-center justify-center gap-1'>Entrar no grupo <IoLogoWhatsapp /></div>} size={15} />  </a>}
           />
-          
+
         </div>
-      
+
       </aside>
 
-               {/* {data?.length <= 0 &&
+      {/* {data?.length <= 0 &&
           <p className="text-[18pt] text-(--text-color)"
           >Nenhum animal cadastrado! </p>} */}
 
-              
+
 
       <section className="scroll-mt-8  [@media(min-width:1100px)]:order-3 order-2 gap-2  xl:w-97.5 items-start flex flex-wrap justify-center mb-4"
         id="adotar">
@@ -149,10 +151,10 @@ const petsFiltrados = Array.isArray(data)
 
         {error && !isLoading && <p className="text-[18pt] font-bold text-red-800 w-full"> Algo deu errado. Tente novamente.</p>}
 
-              {!error && !isLoading && petsFiltrados?.length<=0 && 
-            <p className='text-[18pt] text-(--text-color) w-full'>Nenhum animal encontrado.</p>}
+        {!error && !isLoading && petsFiltrados?.length <= 0 &&
+          <p className='text-[18pt] text-(--text-color) w-full'>Nenhum animal encontrado.</p>}
 
-             {isLoading && <div className='flex flex-col justify-center items-center mx-2'>
+        {isLoading && <div className='flex flex-col justify-center items-center mx-2'>
 
           <img src={loading} className="w-20 h-auto" />
 
@@ -162,7 +164,7 @@ const petsFiltrados = Array.isArray(data)
             <p>O carregamento pode demorar alguns segundos.</p>
           </div>
         </div>}
-       
+
 
         {!isLoading &&
           <>
@@ -181,7 +183,7 @@ const petsFiltrados = Array.isArray(data)
               />
             ))} </>}
 
-            
+
 
 
       </section>
@@ -203,11 +205,19 @@ const petsFiltrados = Array.isArray(data)
 
               <hr className='p-[0.5px] w-full bg-(--text-color) text-(--text-color)' />
 
-              <p className='font-bold text-[20pt] text-(--text-color)'>APOIE:</p>
+              <div className='flex justify-center items-center gap-2 text-(--text-color)'>
+                <CiPill />
+                <p className='font-bold text-[20pt] '>APOIE:</p>
+                <FaTshirt />
+              </div>
               <p className='text-[12pt] text-left'>Doe remédios para os animais ou apoie nosso Bazar com roupas, calçados, artesanato, livros ou plantas.</p>
 
-<a href="https://wa.me/5593991185009" target='_blank'>
-              <Button name={<p className='flex whitespace-nowrap items-center justify-center gap-1'>Fale Conosco <IoLogoWhatsapp /></p>} size={15} />
+              <a href="https://wa.me/5593991181760" target='_blank'>
+                <Button name={<p className='flex whitespace-nowrap items-center justify-center gap-1'>(93) 99118-1760 <IoLogoWhatsapp /></p>} size={15} />
+              </a>
+
+              <a href="https://wa.me/5593992412308" target='_blank'>
+                <Button name={<p className='flex whitespace-nowrap items-center justify-center gap-1'>(93) 99241-2308 <IoLogoWhatsapp /></p>} size={15} />
               </a>
             </div>} />
 
@@ -227,7 +237,7 @@ const petsFiltrados = Array.isArray(data)
     <About />
 
 
-    </div>
-    )
+  </div>
+  )
 }
 export default PagePrincipal
