@@ -1,279 +1,226 @@
-# Achados e Perdidos — Frontend
+# 🐾 APATA - Plataforma de Adoção de Animais
 
-Frontend do projeto **Achados e Perdidos**, desenvolvido em **React + Vite**, focado no consumo de **API REST**, autenticação via JWT e separação clara entre área pública e área administrativa.
+Sistema web desenvolvido para auxiliar a divulgação de animais disponíveis para adoção, permitindo que visitantes encontrem pets através de filtros e que administradores realizem o gerenciamento dos cadastros.
 
-O sistema foi pensado para pequenas empresas ou escolas, onde **um único administrador** gerencia os itens e o público apenas visualiza.
+## 📋 Sobre o Projeto
+
+O APATA é uma aplicação Front-End construída em React que consome uma API para exibir animais cadastrados para adoção.
+
+Os usuários podem navegar pelos animais disponíveis, utilizar filtros de busca e visualizar informações importantes sobre cada pet.
+
+Já a área administrativa permite autenticação de usuários autorizados para realizar o gerenciamento dos registros.
 
 ---
+
 
 ## Screenshots
 
 
-![Tela Inicial](https://res.cloudinary.com/drklvmtqp/image/upload/v1766695024/Captura_de_tela_2025-12-25_173422_lyyhb2.png)
+![Tela Inicial](https://res.cloudinary.com/drklvmtqp/image/upload/v1775830396/Captura_de_tela_2026-04-10_110953_errvw6.png)
 
+![Tela de Pesquisa](https://res.cloudinary.com/drklvmtqp/image/upload/v1775830396/Captura_de_tela_2026-04-10_110906_ueprqh.png)
 
-![Tela de Login](https://res.cloudinary.com/drklvmtqp/image/upload/v1766695023/Captura_de_tela_2025-12-25_173555_nwdhrr.png)
+![Tela de Cadastro](https://res.cloudinary.com/drklvmtqp/image/upload/v1775830396/Captura_de_tela_2026-04-10_111106_l8ypc2.png)
 
+![Tela de Login](https://res.cloudinary.com/drklvmtqp/image/upload/v1780747263/Captura_de_tela_2026-06-06_090002_gyml2h.png)
 
-![Painel Administrativo](https://res.cloudinary.com/drklvmtqp/image/upload/v1766695024/Captura_de_tela_2025-12-25_173519_lexfba.png)
+![Tela de Edição](https://res.cloudinary.com/drklvmtqp/image/upload/v1775830396/Captura_de_tela_2026-04-10_111044_upvalo.png)
+---
 
+## 🚀 Funcionalidades
 
-![Cadastrando Item](https://res.cloudinary.com/drklvmtqp/image/upload/v1766695024/Captura_de_tela_2025-12-25_173534_mhv4to.png)
+### Área Pública
 
-![Deletando Item](https://res.cloudinary.com/drklvmtqp/image/upload/v1766695220/Captura_de_tela_2025-12-25_174003_wudqhw.png)
+- Listagem de animais disponíveis para adoção
+- Busca por nome
+- Filtro por espécie
+- Filtro por sexo
+- Filtro por porte
+- Exibição de informações detalhadas dos animais
+- Navegação responsiva
+
+### Área Administrativa
+
+- Login de administrador
+- Proteção de rotas
+- Cadastro de novos animais
+- Edição de animais cadastrados
+- Exclusão de registros
+- Gerenciamento dos dados através da API
 
 ---
 
-## Backend
+## 🛠 Tecnologias Utilizadas
 
-Este repositório contém apenas o **frontend** da aplicação.
+### Front-End
 
-O código do **backend (API, autenticação, banco de dados e regras de negócio)** está disponível em um repositório separado no GitHub:
-
- **Backend – Achados e Perdidos**  
-(https://github.com/willqos15/API-AEPerdidos)
-
-O frontend consome essa API para autenticação, listagem e gerenciamento dos itens.
-
----
-
-## Funcionalidades
-
-### Público
-- Visualização dos itens perdidos
-- Busca de itens
-- Não requer autenticação
-
-### Administrador
-- Login com autenticação JWT
-- Cadastro, edição e exclusão de itens
-- Upload e remoção de imagens
-- Acesso controlado por rotas protegidas
-
----
-
-## Tecnologias
-
-- React + Vite
-- Axios
+- React 19
 - React Router DOM
 - React Hook Form
-- @tanstack/react-query
-- CSS Modules
-- JWT (Bearer Token)
-- LocalStorage
-- Cloudinary
+- TanStack Query (React Query)
+- Axios
+- Tailwind CSS
+- React Icons
+- Vite
+
+### Ferramentas
+
+- ESLint
+- Git
+- GitHub
+- Vercel
 
 ---
 
-## Dependências
+## 📁 Estrutura do Projeto
 
-Principais dependências utilizadas no frontend:
-
-- **react / react-dom** — biblioteca base da aplicação
-- **vite** — bundler e servidor de desenvolvimento
-- **axios** — consumo da API REST
-- **react-router-dom** — gerenciamento de rotas
-- **@tanstack/react-query** — controle de requisições, cache e mutações
-- **react-hook-form** — formulários e validações
-- **react-number-format / react-imask** — mascaramento de inputs
-- **react-icons** — ícones
+```text
+src/
+│
+├── components/
+│   ├── Navbar
+│   ├── Hero
+│   ├── Item
+│   ├── Formulario
+│   ├── Alert
+│   └── Outros componentes reutilizáveis
+│
+├── paginas/
+│   ├── pageprincipal
+│   ├── PainelAdm
+│   ├── gerenciar
+│   └── Prorota
+│
+├── hookapi/
+│   └── fetchItem.jsx
+│
+├── img/
+│   └── Recursos visuais
+│
+├── ContextNavbar.jsx
+├── App.jsx
+└── main.jsx
+```
 
 ---
 
-## Como Rodar o Projeto
+## 🔗 Integração com API
 
-### Pré-requisitos
-- Node.js (versão 18 ou superior)
-- Gerenciador de pacotes npm ou yarn
-- Backend da API rodando e acessível
+A aplicação realiza comunicação com uma API através do Axios utilizando variáveis de ambiente.
 
-### 1º Passo: Clone o repositório
+Exemplo:
+
+```env
+VITE_URLAPI=https://sua-api.com
+```
+
+Endpoints utilizados:
+
+```text
+GET    /pets
+POST   /login
+PUT    /pets/:id
+DELETE /pets/:id
+```
+
+---
+
+## ⚙️ Instalação
+
+Clone o repositório:
 
 ```bash
-git clone https://github.com/willqos15/Achados-e-Perdidos.git
-cd Achados-e-Perdidos
+git clone https://github.com/seu-usuario/apata-frontend.git
 ```
 
-### 2º Passo: Instale as dependências
-`npm install
-`
+Entre na pasta:
 
-### 3º Passo: Configure o arquivo .env
-Entre no arquivo .env e configure o VITE_URLAPI
-
-### 4º Passo: Rode o projeto
-`npm run dev
-`
-
----
-
-## Estrutura do Projeto
-
-O frontend foi organizado para separar claramente **componentes reutilizáveis**, **páginas**, **consumo de API** e **configurações globais**, facilitando manutenção e evolução do projeto.
-
-### Diretórios principais
-
-
-### `/src`
-Diretório principal do código da aplicação React.
-
-#### `/src/components`
-Componentes reutilizáveis da aplicação.
-Inclui:
-- Componentes visuais (Item, Navbar, Footer)
-- Componentes funcionais (Alert, Formulário)
-- Cada componente possui seu próprio **CSS Module**, garantindo escopo isolado de estilos.
-
-#### `/src/paginas`
-Páginas que representam **rotas da aplicação**.
-
-- `pageprincipal.jsx`  
-  Página pública principal com listagem de itens.
-
-- `pagebusca.jsx`  
-  Página de busca de itens perdidos.
-
-- `pagecadastro.jsx`  
-  Tela de cadastro de itens (acesso administrativo).
-
-- `gerenciar.jsx`  
-  Tela de gerenciamento de itens (editar e excluir).
-
-- `PainelAdm.jsx`  
-  Tela de login do administrador.
-
-- `Prorota.jsx`  
-  Componente de proteção de rotas.  
-  Verifica a existência de token JWT no `localStorage` e controla o acesso às rotas administrativas.
-
-
-#### `/src/hookapi`
-Centraliza toda a comunicação com a API.
-
-- `fetchItem.jsx`  
-  Contém funções Axios para:
-  - Listar itens (público)
-  - Criar, editar e excluir itens (admin)
-  - Login do administrador  
-  As requisições protegidas utilizam **Bearer Token** no header.
-
-
-#### `/src/img`
-Imagens internas do projeto, como loaders e imagens usadas para teste da interface.
-
-
-#### `/src/ContextNavbar.jsx`
-
-Context API responsável por **centralizar estados globais da aplicação** e controle visual do menu.
-
-Suas principais responsabilidades incluem:
-
-- Controle do **estado do usuário**:
-  - Usuário público
-  - Usuário administrador
-- Alternância dinâmica das opções exibidas na **Navbar**, de acordo com o tipo de usuário logado
-- Controle do **estado da barra de busca**
-- Armazenamento e sincronização da lista de itens exibidos
-- Auxílio no controle de **estados de carregamento** durante requisições
-
-Esse contexto é consumido principalmente pela `Navbar`, permitindo:
-- Exibir ações diferentes para usuários comuns e administradores
-- Reagir a mudanças de autenticação (login/logout)
-- Manter consistência visual e funcional entre páginas sem prop drilling
-
----
-
-#### Arquivos principais
-
-- `App.jsx`  
-  Define as rotas da aplicação utilizando React Router DOM.
-
-- `main.jsx`  
-  Ponto de entrada da aplicação React.
-
-- `index.css` / `App.css`  
-  Estilos globais da aplicação.
-
----
-
-### Arquivos de configuração
-
-- `.env`  
-  Variáveis de ambiente (API).
-
-- `vite.config.js`  
-  Configuração do Vite.
-
-- `vercel.json`  
-  Configuração de deploy na Vercel.
-
-- `package.json`  
-  Dependências e scripts do projeto.
-
----
-
-
-### Rotas do projeto
+```bash
+cd apata-frontend
 ```
-├── public/
-│   ├── ico.png
-│   └── vite.svg
-│
-├── src/
-│   ├── assets/
-│   │   └── react.svg
-│   │
-│   ├── components/
-│   │   ├── alert.jsx
-│   │   ├── alert.module.css
-│   │   ├── formulario.jsx
-│   │   ├── formulario.module.css
-│   │   ├── Item.jsx
-│   │   ├── Item.module.css
-│   │   ├── mfooter.jsx
-│   │   ├── mfooter.module.css
-│   │   ├── Navbar.jsx
-│   │   └── Navbar.module.css
-│   │
-│   ├── hookapi/
-│   │   └── fetchItem.jsx
-│   │
-│   ├── img/
-│   │   ├── load.gif
-│   │   ├── loading.svg
-│   │   └── teste.jpg
-│   │
-│   ├── paginas/
-│   │   ├── pageprincipal.jsx
-│   │   ├── pageprincipal.module.css
-│   │   ├── pagebusca.jsx
-│   │   ├── pagebusca.module.css
-│   │   ├── pagecadastro.jsx
-│   │   ├── pagecadastro.module.css
-│   │   ├── gerenciar.jsx
-│   │   ├── gerenciar.module.css
-│   │   ├── PainelAdm.jsx
-│   │   ├── PainelAdm.module.css
-│   │   └── Prorota.jsx
-│   │
-│   ├── ContextNavbar.jsx
-│   ├── App.jsx
-│   ├── App.css
-│   ├── main.jsx
-│   └── index.css
-│
-├── .env
-├── index.html
-├── package.json
-├── vite.config.js
-└── vercel.json
+
+Instale as dependências:
+
+```bash
+npm install
 ```
+
+Crie o arquivo `.env`:
+
+```env
+VITE_URLAPI=http://localhost:3000
+```
+
+Execute o projeto:
+
+```bash
+npm run dev
+```
+
 ---
 
-## 👨‍💻 Sobre o autor
+## 📸 Telas do Sistema
 
-Desenvolvido por William Queiroz
-🔗 Portfólio: (https://queirozdeveloper.vercel.app/)
+### Página Inicial
 
+- Lista de animais disponíveis
+- Busca por nome
+- Filtros por características
 
+### Painel Administrativo
+
+- Autenticação
+- Gerenciamento dos animais cadastrados
+
+### Cadastro de Animais
+
+- Formulário para inclusão de novos registros
+
+---
+
+## 🔒 Controle de Acesso
+
+O sistema possui autenticação baseada em token.
+
+Após o login:
+
+- O token é armazenado localmente
+- Rotas administrativas são liberadas
+- Operações de edição e exclusão utilizam autorização via Bearer Token
+
+---
+
+## 📚 Aprendizados Aplicados
+
+Durante o desenvolvimento foram aplicados conceitos como:
+
+- Componentização em React
+- Gerenciamento de estado com Context API
+- Consumo de APIs REST
+- Cache e sincronização de dados com React Query
+- Formulários com React Hook Form
+- Rotas protegidas
+- Lazy Loading com React Lazy e Suspense
+- Responsividade utilizando Tailwind CSS
+
+---
+
+## 💡 Melhorias Futuras
+
+- Paginação dos animais
+- Upload otimizado de imagens
+- Favoritar animais
+- Painel com métricas de adoção
+- Recuperação de senha
+- Dashboard administrativo mais completo
+- Testes automatizados
+
+---
+
+## 👨‍💻 Autor
+
+William Queiroz
+
+Desenvolvedor Full Stack e Professor de Tecnologia.
+
+Projeto desenvolvido para apoiar a divulgação e adoção responsável de animais através da tecnologia.
