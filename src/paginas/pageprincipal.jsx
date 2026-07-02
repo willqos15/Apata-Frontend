@@ -212,13 +212,11 @@ function PagePrincipal() {
               </div>
               <p className='text-[12pt] text-left'>Doe remédios para os animais ou apoie nosso Bazar com roupas, calçados, artesanato, livros ou plantas.</p>
 
-              <a href="https://wa.me/5593991181760" target='_blank'>
-                <Button name={<p className='flex whitespace-nowrap items-center justify-center gap-1'>(93) 99118-1760 <IoLogoWhatsapp /></p>} size={15} />
+              <a href="https://forms.gle/jFhi6fvzJgtbiKV68" target='_blank'>
+                <Button name={<p className='flex whitespace-nowrap items-center justify-center gap-1'> Quero Doar</p>} size={15} />
               </a>
 
-              <a href="https://wa.me/5593992412308" target='_blank'>
-                <Button name={<p className='flex whitespace-nowrap items-center justify-center gap-1'>(93) 99241-2308 <IoLogoWhatsapp /></p>} size={15} />
-              </a>
+            
             </div>} />
 
 

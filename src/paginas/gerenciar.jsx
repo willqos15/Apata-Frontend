@@ -6,6 +6,7 @@ import { ContextNavbar } from '../ContextNavbar'
 import Alert from '../components/alert'
 import loading from '../img/load.gif'
 import Search from '../components/search'
+import Button from '../components/button'
 
 function Gerenciar() {
 
@@ -106,6 +107,10 @@ function Gerenciar() {
 
   return (<div className='flex flex-col justify-start items-center'>
 
+    <a href="https://docs.google.com/spreadsheets/d/1mVn88CCj545VMwyB_zKJeR9mQrwkwHTB9OgM_MO7cm8/edit?usp=sharing" target='_blank'>
+                        <Button name={<p className='flex whitespace-nowrap items-center justify-center gap-1'> Contato de Doadores</p>} size={15} />
+                      </a>
+
     {load === true ? <img src={loading} className="m-16 w-20 mx-auto" /> : <>
 
 
@@ -123,6 +128,8 @@ function Gerenciar() {
 
 
       <section className="flex flex-wrap m-4 gap-2 justify-center items-start">
+
+        
 
         <div className='flex flex-col p-4 flex-wrap gap-2 w-fit items-center justify-center bg-(--bg-color2)'>
 
