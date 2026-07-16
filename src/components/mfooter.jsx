@@ -12,7 +12,7 @@ function MFooter() {
 
                 <div className="flex flex-col gap-x-1">
                     <p className="font-bold">APATA - Altamira Pará</p>
-                    <p>Av. Tancredo Neves, 3060. 683712-71</p>
+                  
                 </div>
 
                 <div className="flex lg:flex-col flex-row gap-1">

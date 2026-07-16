@@ -4,7 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom"
 import { ContextNavbar } from "../ContextNavbar";
 import Alert from "./alert";
-import LogoApata from "/logoapata.svg?url"
+import LogoApata from "../img/logoapata.png"
 
 
 function Navbar() {

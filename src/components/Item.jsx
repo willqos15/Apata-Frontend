@@ -6,6 +6,7 @@ import { PatternFormat } from 'react-number-format'
 import Button from "./button";
 import { IoMdMale } from "react-icons/io";
 import { IoMdFemale } from "react-icons/io";
+import { IoLogoWhatsapp } from "react-icons/io";
 import Poup from "./poup";
 
 function Item({
@@ -210,7 +211,7 @@ const [zoom,setZoom] = useState(false)
 
 
 
-                    <label className="font-bold pt-4 text-(--text-color)">Entre em contato:</label>
+                
                     <a
                         href={`https://wa.me/55${contato}?text=${encodeURIComponent(
                             `Quero saber mais sobre o ${especie} ${Nome}`
@@ -218,7 +219,7 @@ const [zoom,setZoom] = useState(false)
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        <Button name={formatarTelefone(contato)} /></a>
+                        <Button name={<div className="flex items-center justify-center gap-1"> <IoLogoWhatsapp className="p-0 m-0"/> <p>Contato</p>  </div>} /></a>
 
                 </div>
                 : null}
