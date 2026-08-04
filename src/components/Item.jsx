@@ -127,7 +127,13 @@ function Item({
     return `(${n.slice(0, 2)}) ${n.slice(2, 7)}-${n.slice(7)}`
   }
 
+  
+
   return numero
+}
+
+function TelefoneInt(telefone) {
+  return telefone.replace(/\D/g, "");
 }
 
 const [zoom,setZoom] = useState(false)
@@ -213,7 +219,7 @@ const [zoom,setZoom] = useState(false)
 
                 
                     <a
-                        href={`https://wa.me/55${contato}?text=${encodeURIComponent(
+                        href={`https://wa.me/55${TelefoneInt(contato)}?text=${encodeURIComponent(
                             `Quero saber mais sobre o ${especie} ${Nome}`
                         )}`}
                         target="_blank"

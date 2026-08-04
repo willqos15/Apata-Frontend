@@ -17,7 +17,7 @@ function MFooter() {
 
                 <div className="flex lg:flex-col flex-row gap-1">
                     <div className="flex items-center justify-center">
-                       <a href="https://www.instagram.com/apata_altamira/" target="_blank" className="flex items-center hover:text-(--text-color2) transition duration-300"> <AiFillInstagram /> Instagram</a>
+                       <a href="https://www.instagram.com/apataltamira/" target="_blank" className="flex items-center hover:text-(--text-color2) transition duration-300"> <AiFillInstagram /> Instagram</a>
                         
                         <a href="mailto:apatadealtamira@gmail.com" target="_blank" className="flex items-center hover:text-(--text-color2) transition duration-300">
                             <MdEmail className="ml-2"/>
