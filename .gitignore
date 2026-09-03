@@ -35,3 +35,7 @@ next-env.d.ts
 
 # vercel
 .vercel
+
+# next 16 auto-generated agent rules
+AGENTS.md
+CLAUDE.md
