@@ -53,7 +53,7 @@ export default function GerenciarPage() {
     setDeleteAlertOpen(false)
   }
 
-  const filteredPets = filterPets(data ?? [], filters)
+  const filteredPets = filterPets(Array.isArray(data) ? data : [], filters)
 
   return (
     <div className="flex flex-col justify-start items-center">
