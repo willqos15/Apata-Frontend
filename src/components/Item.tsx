@@ -97,8 +97,8 @@ export default function Item({ pet, admin, onDelete, onUpdate, onStart, onEnd }:
   return (
     <>
       <Popup
-        show={zoom}
-        setShow={setZoom}
+        open={zoom}
+        setOpen={setZoom}
         title={`foto ${nome}`}
         content={
           // eslint-disable-next-line @next/next/no-img-element -- remote user-uploaded photo, host not configured

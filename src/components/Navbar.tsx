@@ -36,7 +36,7 @@ export default function Navbar() {
     setLogoutAlertOpen(false)
   }
 
-  function goToCreatePage() {
+  function goToPetRegistration() {
     router.push('/cadastro')
   }
 
@@ -91,7 +91,7 @@ export default function Navbar() {
 
             {isAdmin && (
               <>
-                <li onClick={goToCreatePage} className="navitem">
+                <li onClick={goToPetRegistration} className="navitem">
                   Cadastrar
                 </li>
 

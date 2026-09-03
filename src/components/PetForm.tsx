@@ -31,7 +31,7 @@ function scrollIntoCenter(e: FocusEvent<HTMLElement>) {
 
 export default function PetForm() {
   const photoFile = useRef<File | null>(null)
-  const fileInput = useRef<HTMLInputElement>(null)
+  const photoInput = useRef<HTMLInputElement>(null)
 
   const [photoError, setPhotoError] = useState<'' | 'erro'>('')
   const [fileName, setFileName] = useState('')
@@ -46,7 +46,7 @@ export default function PetForm() {
     reset,
   } = useForm<PetFormValues>({ mode: 'all', defaultValues: INITIAL_VALUES })
 
-  function hasPhotoError(): boolean {
+  function validatePhoto(): boolean {
     if (!photoFile.current) {
       setPhotoError('erro')
       return true
@@ -57,7 +57,7 @@ export default function PetForm() {
 
   async function submit(values: PetFormValues) {
     if (status !== 'inicio') return
-    if (hasPhotoError()) return
+    if (validatePhoto()) return
 
     setStatus('load')
 
@@ -73,7 +73,7 @@ export default function PetForm() {
     try {
       await createPet(formData)
       reset(INITIAL_VALUES)
-      if (fileInput.current) fileInput.current.value = ''
+      if (photoInput.current) photoInput.current.value = ''
       photoFile.current = null
       setFileName('')
       setPhotoError('')
@@ -107,9 +107,9 @@ export default function PetForm() {
 
           <label className="formlabel"> Carregue uma imagem:</label>
 
-          <Button name="Escolha sua imagem" onClick={() => fileInput.current?.click()} size={15} />
+          <Button name="Escolha sua imagem" onClick={() => photoInput.current?.click()} size={15} />
 
-          <input type="file" ref={fileInput} onChange={handleFileChange} onFocus={scrollIntoCenter} className="hidden" accept="image/*" />
+          <input type="file" ref={photoInput} onChange={handleFileChange} onFocus={scrollIntoCenter} className="hidden" accept="image/*" />
 
           <p className="pl-2.5 text-[16px] text-(--text-color)">{fileName}</p>
 

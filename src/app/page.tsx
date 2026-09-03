@@ -16,7 +16,7 @@ async function PetsFromServer() {
   return <HomePets initialPets={pets} />
 }
 
-function GroupButton() {
+function JoinGroupButton() {
   return (
     <Button
       name={
@@ -55,7 +55,7 @@ export default function HomePage() {
               text="Faça parte da APATA."
               content={
                 <a href="https://chat.whatsapp.com/CwqD6s5Ft5C9ITPPsE1V7q" target="_blank" rel="noopener noreferrer">
-                  <GroupButton />
+                  <JoinGroupButton />
                 </a>
               }
             />
@@ -65,7 +65,7 @@ export default function HomePage() {
               text="Mensalidade mínima de R$30,00."
               content={
                 <a href="https://chat.whatsapp.com/JV5q2ig541o5vcenZdzhZl?mode=gi_t" target="_blank" rel="noopener noreferrer">
-                  <GroupButton />
+                  <JoinGroupButton />
                 </a>
               }
             />
