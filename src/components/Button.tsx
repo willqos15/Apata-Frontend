@@ -11,7 +11,7 @@ interface ButtonProps {
   disabled?: boolean
 }
 
-export default function Button({ name, onClick, size, type, className = '', disabled = false }: ButtonProps) {
+export default function Button({ name, onClick, size, type = 'button', className = '', disabled = false }: ButtonProps) {
   const style: CSSProperties | undefined = size !== undefined ? { fontSize: `${size}pt` } : undefined
 
   return (
