@@ -5,12 +5,6 @@ import { useRouter } from 'next/navigation'
 import Spinner from './Spinner'
 import { useAuthToken, useIsClient } from '@/lib/auth'
 
-/**
- * LIMITATION: the JWT lives in localStorage, which the server (and Next's
- * proxy/middleware) cannot read, so this guard runs only in the browser after
- * hydration. The server-rendered HTML for guarded routes contains just a
- * spinner.
- */
 export default function AuthGuard({ children }: { children: ReactNode }) {
   const router = useRouter()
   const isClient = useIsClient()

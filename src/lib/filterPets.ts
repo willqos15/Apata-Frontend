@@ -1,19 +1,19 @@
 import type { Pet, PetFilters } from '@/types'
 
 export const EMPTY_FILTERS: PetFilters = {
-  busca: '',
-  especie: '',
-  sexo: '',
-  porte: '',
+  search: '',
+  species: '',
+  sex: '',
+  size: '',
 }
 
 export function filterPets(pets: Pet[], filters: PetFilters): Pet[] {
-  const busca = filters.busca.toLowerCase()
+  const search = filters.search.toLowerCase()
   return pets.filter(
     (pet) =>
-      (busca === '' || pet.nome.toLowerCase().includes(busca)) &&
-      (filters.especie === '' || pet.especie === filters.especie) &&
-      (filters.sexo === '' || pet.sexo === filters.sexo) &&
-      (filters.porte === '' || pet.porte === filters.porte),
+      (search === '' || pet.nome.toLowerCase().includes(search)) &&
+      (filters.species === '' || pet.especie === filters.species) &&
+      (filters.sex === '' || pet.sexo === filters.sex) &&
+      (filters.size === '' || pet.porte === filters.size),
   )
 }

@@ -5,27 +5,24 @@ import { useQuery } from '@tanstack/react-query'
 import Item from './Item'
 import PetFilters from './PetFilters'
 import PetsLoadingMessage from './PetsLoadingMessage'
-import { listarPets } from '@/lib/api'
+import { listPets } from '@/lib/api'
 import { EMPTY_FILTERS, filterPets } from '@/lib/filterPets'
 import type { Pet, PetFilters as PetFiltersValue } from '@/types'
 
 interface HomePetsProps {
-  /** Pets fetched on the server; null when the server fetch failed/timed out. */
   initialPets: Pet[] | null
 }
 
 export default function HomePets({ initialPets }: HomePetsProps) {
   const { data, isPending, isError } = useQuery({
     queryKey: ['itens'],
-    queryFn: listarPets,
+    queryFn: listPets,
     initialData: initialPets ?? undefined,
-    // Server data is fresh per request; avoid an immediate duplicate client fetch,
-    // but refetch on focus/remount after 30 s and on invalidation from /gerenciar.
     staleTime: 30_000,
   })
 
   const [filters, setFilters] = useState<PetFiltersValue>(EMPTY_FILTERS)
-  const petsFiltrados = filterPets(data ?? [], filters)
+  const filteredPets = filterPets(data ?? [], filters)
 
   return (
     <>
@@ -47,13 +44,13 @@ export default function HomePets({ initialPets }: HomePetsProps) {
           <p className="text-[18pt] font-bold text-red-800 w-full"> Algo deu errado. Tente novamente.</p>
         )}
 
-        {!isError && !isPending && petsFiltrados.length <= 0 && (
+        {!isError && !isPending && filteredPets.length <= 0 && (
           <p className="text-[18pt] text-(--text-color) w-full">Nenhum animal encontrado.</p>
         )}
 
         {isPending && <PetsLoadingMessage />}
 
-        {!isPending && petsFiltrados.map((pet) => <Item key={pet.id} pet={pet} admin={false} />)}
+        {!isPending && filteredPets.map((pet) => <Item key={pet.id} pet={pet} admin={false} />)}
       </section>
     </>
   )

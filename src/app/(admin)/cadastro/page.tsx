@@ -1,5 +1,5 @@
-import Formulario from '@/components/Formulario'
+import PetForm from '@/components/PetForm'
 
 export default function CadastroPage() {
-  return <Formulario />
+  return <PetForm />
 }

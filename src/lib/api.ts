@@ -8,31 +8,30 @@ function authConfig() {
   return { headers: { authorization: `Bearer ${getToken() ?? ''}` } }
 }
 
-export async function listarPets(): Promise<Pet[]> {
+export async function listPets(): Promise<Pet[]> {
   const { data } = await axios.get<Pet[]>(`${API_URL}/pets`)
   return data
 }
 
-export async function criarPet(dados: FormData): Promise<Pet> {
-  const { data } = await axios.post<Pet>(`${API_URL}/pets`, dados, authConfig())
+export async function createPet(formData: FormData): Promise<Pet> {
+  const { data } = await axios.post<Pet>(`${API_URL}/pets`, formData, authConfig())
   return data
 }
 
-export async function editarPet(id: Pet['id'], dados: FormData): Promise<Pet> {
-  const { data } = await axios.put<Pet>(`${API_URL}/pets/${id}`, dados, authConfig())
+export async function updatePet(id: Pet['id'], formData: FormData): Promise<Pet> {
+  const { data } = await axios.put<Pet>(`${API_URL}/pets/${id}`, formData, authConfig())
   return data
 }
 
-export async function deletarPet(id: Pet['id']): Promise<void> {
+export async function deletePet(id: Pet['id']): Promise<void> {
   await axios.delete(`${API_URL}/pets/${id}`, authConfig())
 }
 
-export async function loginAdm(dados: LoginPayload): Promise<LoginResponse> {
-  const { data } = await axios.post<LoginResponse>(`${API_URL}/login`, dados)
+export async function loginAdmin(credentials: LoginPayload): Promise<LoginResponse> {
+  const { data } = await axios.post<LoginResponse>(`${API_URL}/login`, credentials)
   return data
 }
 
-/** Throws (401/403) when the stored token is no longer valid. */
-export async function verificarToken(): Promise<void> {
+export async function verifyToken(): Promise<void> {
   await axios.get(`${API_URL}/usuarios`, authConfig())
 }

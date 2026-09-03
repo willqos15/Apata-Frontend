@@ -7,53 +7,53 @@ import Button from '@/components/Button'
 import Item from '@/components/Item'
 import PetFilters from '@/components/PetFilters'
 import Spinner from '@/components/Spinner'
-import { deletarPet, editarPet, listarPets } from '@/lib/api'
+import { deletePet, listPets, updatePet } from '@/lib/api'
 import { EMPTY_FILTERS, filterPets } from '@/lib/filterPets'
 import type { Pet, PetFilters as PetFiltersValue } from '@/types'
 
-interface AlvoDelete {
+interface DeleteTarget {
   id: Pet['id']
-  nome: string
+  name: string
 }
 
 export default function GerenciarPage() {
   const queryClient = useQueryClient()
 
-  const [poup, setPoup] = useState(false)
-  const [alvoDelete, setAlvoDelete] = useState<AlvoDelete | null>(null)
-  const [load, setLoad] = useState(false)
+  const [deleteAlertOpen, setDeleteAlertOpen] = useState(false)
+  const [deleteTarget, setDeleteTarget] = useState<DeleteTarget | null>(null)
+  const [saving, setSaving] = useState(false)
   const [filters, setFilters] = useState<PetFiltersValue>(EMPTY_FILTERS)
 
-  const { data } = useQuery({ queryKey: ['itens'], queryFn: listarPets })
+  const { data } = useQuery({ queryKey: ['itens'], queryFn: listPets })
 
-  const mutationUpdate = useMutation({
-    mutationFn: ({ id, dados }: { id: Pet['id']; dados: FormData }) => editarPet(id, dados),
+  const updateMutation = useMutation({
+    mutationFn: ({ id, formData }: { id: Pet['id']; formData: FormData }) => updatePet(id, formData),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['itens'] })
-      setLoad(false)
+      setSaving(false)
     },
   })
 
-  const mutationDelete = useMutation({
-    mutationFn: (id: Pet['id']) => deletarPet(id),
+  const deleteMutation = useMutation({
+    mutationFn: (id: Pet['id']) => deletePet(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['itens'] }),
   })
 
-  function atualizar(id: Pet['id'], dados: FormData): Promise<Pet> {
-    return mutationUpdate.mutateAsync({ id, dados })
+  function handleUpdate(id: Pet['id'], formData: FormData): Promise<Pet> {
+    return updateMutation.mutateAsync({ id, formData })
   }
 
-  function pedirDelete(id: Pet['id'], nome: string) {
-    setAlvoDelete({ id, nome: nome.length > 35 ? `${nome.slice(0, 35)}...` : nome })
-    setPoup(true)
+  function requestDelete(id: Pet['id'], name: string) {
+    setDeleteTarget({ id, name: name.length > 35 ? `${name.slice(0, 35)}...` : name })
+    setDeleteAlertOpen(true)
   }
 
-  function confirmarDelete() {
-    if (alvoDelete) mutationDelete.mutate(alvoDelete.id)
-    setPoup(false)
+  function confirmDelete() {
+    if (deleteTarget) deleteMutation.mutate(deleteTarget.id)
+    setDeleteAlertOpen(false)
   }
 
-  const petsFiltrados = filterPets(data ?? [], filters)
+  const filteredPets = filterPets(data ?? [], filters)
 
   return (
     <div className="flex flex-col justify-start items-center">
@@ -65,18 +65,18 @@ export default function GerenciarPage() {
         <Button name={<p className="flex whitespace-nowrap items-center justify-center gap-1"> Contato de Doadores</p>} size={15} />
       </a>
 
-      {load ? (
+      {saving ? (
         <Spinner className="m-16 mx-auto" />
       ) : (
         <>
           <Alert
-            titulo="AVISO"
-            descricao={`Tem certeza que deseja excluir o "${alvoDelete?.nome ?? ''}"?`}
-            bty="Sim"
-            fbty={confirmarDelete}
-            btn="Não"
-            fbtn={() => setPoup(false)}
-            estado={poup}
+            title="AVISO"
+            description={`Tem certeza que deseja excluir o "${deleteTarget?.name ?? ''}"?`}
+            confirmLabel="Sim"
+            onConfirm={confirmDelete}
+            cancelLabel="Não"
+            onCancel={() => setDeleteAlertOpen(false)}
+            open={deleteAlertOpen}
           />
 
           <section className="flex flex-wrap m-4 gap-2 justify-center items-start">
@@ -87,19 +87,19 @@ export default function GerenciarPage() {
           </section>
 
           <div className="items-start flex flex-wrap justify-center gap-2 mb-4">
-            {petsFiltrados.map((pet) => (
+            {filteredPets.map((pet) => (
               <Item
                 key={pet.id}
                 pet={pet}
                 admin={true}
-                onDelete={pedirDelete}
-                onUpdate={atualizar}
-                onStart={() => setLoad(true)}
-                onEnd={() => setLoad(false)}
+                onDelete={requestDelete}
+                onUpdate={handleUpdate}
+                onStart={() => setSaving(true)}
+                onEnd={() => setSaving(false)}
               />
             ))}
 
-            {petsFiltrados.length <= 0 && <p className="text-[18pt] text-(--text-color)">Nenhum animal encontrado.</p>}
+            {filteredPets.length <= 0 && <p className="text-[18pt] text-(--text-color)">Nenhum animal encontrado.</p>}
           </div>
         </>
       )}

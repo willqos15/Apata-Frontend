@@ -34,10 +34,6 @@ function getServerToken(): null {
   return null
 }
 
-/**
- * Current JWT (or null). Hydration-safe: the server snapshot is always null,
- * React re-renders with the real value right after hydration.
- */
 export function useAuthToken(): string | null {
   return useSyncExternalStore(subscribe, getToken, getServerToken)
 }
@@ -54,7 +50,6 @@ function serverSnapshot(): boolean {
   return false
 }
 
-/** false during SSR and the hydration render, true afterwards. */
 export function useIsClient(): boolean {
   return useSyncExternalStore(noopSubscribe, clientSnapshot, serverSnapshot)
 }

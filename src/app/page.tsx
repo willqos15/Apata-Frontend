@@ -2,7 +2,7 @@ import { Suspense } from 'react'
 import { IoLogoWhatsapp } from 'react-icons/io'
 import { CiPill } from 'react-icons/ci'
 import { FaTshirt } from 'react-icons/fa'
-import imagempix from '@/img/QRPIX.jpeg'
+import pixImage from '@/img/QRPIX.jpeg'
 import About from '@/components/About'
 import Button from '@/components/Button'
 import CardAside from '@/components/CardAside'
@@ -16,7 +16,7 @@ async function PetsFromServer() {
   return <HomePets initialPets={pets} />
 }
 
-function BotaoGrupo() {
+function GroupButton() {
   return (
     <Button
       name={
@@ -41,7 +41,7 @@ export default function HomePage() {
           <div className="scroll-mt-8 sticky sm:w-fit w-full top-8 flex flex-col gap-2 px-2" id="doar">
             <CardAside
               title="PIX SOLIDÁRIO"
-              image={imagempix}
+              image={pixImage}
               content={
                 <>
                   <p className="text-[12pt] font-bold">19.552.047/0001-43</p>
@@ -55,7 +55,7 @@ export default function HomePage() {
               text="Faça parte da APATA."
               content={
                 <a href="https://chat.whatsapp.com/CwqD6s5Ft5C9ITPPsE1V7q" target="_blank" rel="noopener noreferrer">
-                  <BotaoGrupo />
+                  <GroupButton />
                 </a>
               }
             />
@@ -65,7 +65,7 @@ export default function HomePage() {
               text="Mensalidade mínima de R$30,00."
               content={
                 <a href="https://chat.whatsapp.com/JV5q2ig541o5vcenZdzhZl?mode=gi_t" target="_blank" rel="noopener noreferrer">
-                  <BotaoGrupo />
+                  <GroupButton />
                 </a>
               }
             />
