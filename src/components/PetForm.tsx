@@ -46,18 +46,18 @@ export default function PetForm() {
     reset,
   } = useForm<PetFormValues>({ mode: 'all', defaultValues: INITIAL_VALUES })
 
-  function validatePhoto(): boolean {
+  function isPhotoValid(): boolean {
     if (!photoFile.current) {
       setPhotoError('erro')
-      return true
+      return false
     }
     setPhotoError('')
-    return false
+    return true
   }
 
   async function submit(values: PetFormValues) {
     if (status !== 'inicio') return
-    if (validatePhoto()) return
+    if (!isPhotoValid()) return
 
     setStatus('load')
 
