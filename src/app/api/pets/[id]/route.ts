@@ -32,18 +32,21 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     const { fields, file } = await readPetBody(request)
     const dataUpdate: Record<string, unknown> = { ...fields }
 
-    if (file) {
-      if (dadosAtuais.public_idfoto) await destroyPhoto(dadosAtuais.public_idfoto)
+    let fotoSubstituida: string | null = null
 
+    if (file) {
       const resultado = await uploadPetPhoto(file)
       dataUpdate.foto = resultado.secure_url
       dataUpdate.public_idfoto = resultado.public_id
+      fotoSubstituida = dadosAtuais.public_idfoto
     }
 
     const petAtualizado = await prisma.pet.updateMany({
       where: { id, deleted_at: null },
       data: dataUpdate as Prisma.PetUpdateManyMutationInput,
     })
+
+    if (fotoSubstituida) await destroyPhoto(fotoSubstituida).catch(() => undefined)
 
     return NextResponse.json(petAtualizado, { status: 200 })
   } catch {
