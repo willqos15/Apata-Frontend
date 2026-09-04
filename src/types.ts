@@ -37,3 +37,7 @@ export interface LoginPayload {
 export interface LoginResponse {
   token: string
 }
+
+export interface UpdateResult {
+  count: number
+}
