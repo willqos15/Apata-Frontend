@@ -5,12 +5,12 @@ export type Size = 'pequeno' | 'medio' | 'grande'
 export interface Pet {
   id: string
   nome: string
-  foto: string
+  foto: string | null
   especie: Species
   sexo: Sex
   porte: Size
   descricao: string
-  contato: string
+  contato: string | null
 }
 
 export interface PetFormValues {
