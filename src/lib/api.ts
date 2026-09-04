@@ -37,5 +37,5 @@ export async function logoutAdmin(): Promise<void> {
 }
 
 export async function verifyToken(): Promise<void> {
-  await axios.get(`${API_URL}/usuarios`, authConfig())
+  await axios.post(`${API_URL}/usuarios/atualizatoken`, null, authConfig())
 }
