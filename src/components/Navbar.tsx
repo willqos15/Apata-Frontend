@@ -34,6 +34,7 @@ export default function Navbar() {
     await logoutAdmin().catch(() => undefined)
     clearToken()
     router.push('/painel')
+    router.refresh()
     setLogoutAlertOpen(false)
   }
 
