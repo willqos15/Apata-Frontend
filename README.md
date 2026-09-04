@@ -4,7 +4,7 @@ Sistema web desenvolvido para auxiliar a divulgação de animais disponíveis pa
 
 ## 📋 Sobre o Projeto
 
-O APATA é uma aplicação Front-End construída em Next.js (App Router) com React e TypeScript, que consome uma API para exibir animais cadastrados para adoção.
+O APATA é uma aplicação full-stack construída em Next.js (App Router) com React e TypeScript. A API (antes um servidor Express separado) agora vive no mesmo projeto como Route Handlers em `src/app/api/`, com Prisma sobre MongoDB e upload de imagens no Cloudinary.
 
 Os usuários podem navegar pelos animais disponíveis, utilizar filtros de busca e visualizar informações importantes sobre cada pet.
 
@@ -65,6 +65,15 @@ Já a área administrativa permite autenticação de usuários autorizados para 
 - Tailwind CSS 4 (via `@tailwindcss/postcss`)
 - React Icons
 
+### Back-End (Route Handlers)
+
+- Next.js Route Handlers (`src/app/api/`, runtime Node.js)
+- Prisma ORM 6.19 (`mongodb` provider)
+- MongoDB (replica set obrigatório)
+- Cloudinary (fotos dos pets, pasta `pets_apata`)
+- bcryptjs (hash de senha, compatível com hashes `$2b$` do `bcrypt` nativo)
+- jsonwebtoken (JWT com validade de 7 dias)
+
 ### Ferramentas
 
 - ESLint 9 (flat config + `eslint-config-next`)
@@ -76,65 +85,91 @@ Já a área administrativa permite autenticação de usuários autorizados para 
 
 ## 🧭 Arquitetura de renderização
 
-- **`/` (Home)** — Server Component renderizado dinamicamente a cada requisição (`fetch` com `cache: 'no-store'`). A lista de pets é buscada no servidor e enviada em *streaming* via `<Suspense>`, com `HomePetsFallback` enquanto os dados não chegam.
+- **`/` (Home)** — Server Component renderizado dinamicamente a cada requisição. A lista de pets é lida **direto do banco** (`src/lib/pets-server.ts` → `findActivePets()`), sem passar por HTTP, e enviada em *streaming* via `<Suspense>` com `HomePetsFallback` enquanto os dados não chegam. Se o banco não responder em 10 s a Home renderiza mesmo assim e o cliente busca `/api/pets`.
 - **`/gerenciar`** — Client Component. A lista é gerenciada pelo TanStack Query (chave `['itens']`), com invalidação do cache após editar ou apagar.
-- **`/painel`** (login) e o formulário de `/cadastro` — Client Components que chamam a API diretamente pelo axios.
-- **Proteção de rotas** — o `AuthGuard` é client-side porque o JWT fica no `localStorage`, que só existe no navegador. As rotas do grupo `(admin)` mostram um spinner e redirecionam para `/painel` quando não há token.
+- **`/painel`** (login) e o formulário de `/cadastro` — Client Components que chamam a API interna pelo axios em caminhos relativos (`/api/...`).
+- **Proteção de rotas** — feita no servidor por `src/proxy.ts`: as rotas `/cadastro` e `/gerenciar` só renderizam se o cookie httpOnly `apata_token` contiver um JWT válido; caso contrário o servidor redireciona para `/painel` antes de qualquer HTML ser enviado.
+- **API** — `src/app/api/pets` e `src/app/api/usuarios`, um `route.ts` por recurso, exportando uma função por verbo HTTP. Segmentos estáticos (`busca`, `login`, `logout`, `atualizatoken`) têm precedência sobre `[id]`.
 
 ---
 
 ## 📁 Estrutura do Projeto
 
 ```text
+prisma/
+└── schema.prisma            # Modelos User e Pet (MongoDB)
+
 src/
+├── proxy.ts                 # Guarda server-side de /cadastro e /gerenciar
 ├── app/
 │   ├── layout.tsx           # html, fontes, metadata, Providers, Navbar, Footer
 │   ├── page.tsx             # Home (Server Component; lista de pets via streaming)
 │   ├── loading.tsx
+│   ├── error.tsx
 │   ├── providers.tsx        # QueryClientProvider
 │   ├── globals.css          # Tailwind + variáveis de tema
 │   ├── painel/page.tsx      # Login do administrador
-│   └── (admin)/             # Rotas protegidas (AuthGuard)
-│       ├── layout.tsx
-│       ├── cadastro/page.tsx
-│       └── gerenciar/page.tsx
+│   ├── (admin)/             # Rotas protegidas pelo proxy
+│   │   ├── cadastro/page.tsx
+│   │   └── gerenciar/page.tsx
+│   └── api/
+│       ├── pets/
+│       │   ├── route.ts           # GET lista, POST cria
+│       │   ├── busca/route.ts     # GET ?nome=
+│       │   └── [id]/route.ts      # GET, PUT, DELETE
+│       └── usuarios/
+│           ├── route.ts           # GET lista, POST cria
+│           ├── [id]/route.ts      # GET, PUT, DELETE
+│           ├── login/route.ts     # POST (JWT + cookie httpOnly)
+│           ├── logout/route.ts    # POST (limpa o cookie)
+│           └── atualizatoken/route.ts  # POST (renova o JWT)
+│
+├── server/                  # Módulos server-only usados pela API e pela Home
+│   ├── prisma.ts            # PrismaClient singleton
+│   ├── jwt.ts               # signToken / verifyToken
+│   ├── auth.ts              # cookie apata_token + autenticação (cookie, depois Bearer)
+│   ├── cloudinary.ts        # upload_stream / destroy
+│   ├── body.ts              # multipart ou JSON
+│   └── pets.ts              # consulta de pets ativos (soft delete)
 │
 ├── components/              # Navbar, Hero, Item, PetForm, PetFilters, Alert, Popup, ...
 │
 ├── lib/
-│   ├── api.ts               # cliente axios
-│   ├── auth.ts              # JWT no localStorage
+│   ├── api.ts               # cliente axios (caminhos relativos /api)
+│   ├── auth.ts              # token no localStorage (header Bearer + estado da Navbar)
 │   ├── filterPets.ts
-│   └── pets-server.ts       # fetch server-side da Home
+│   └── pets-server.ts       # leitura direta do banco para a Home
 │
 ├── img/                     # Recursos visuais
-└── types.ts                 # Pet, PetFormValues, ...
+└── types.ts                 # Pet, PetFormValues, UpdateResult, ...
 ```
 
 ---
 
-## 🔗 Integração com API
+## 🔗 API interna
 
-A aplicação realiza comunicação com uma API através do Axios utilizando variáveis de ambiente.
+A API roda no próprio Next.js. O front chama caminhos relativos, sem variável de ambiente pública.
 
-Exemplo:
+| Método | Rota | Auth | Descrição |
+| --- | --- | --- | --- |
+| GET | `/api/pets` | não | Lista pets ativos (mais recentes primeiro) |
+| GET | `/api/pets/busca?nome=` | não | Busca por nome (case-insensitive) |
+| GET | `/api/pets/:id` | não | Detalhe de um pet |
+| POST | `/api/pets` | sim | Cria pet (`multipart/form-data`, foto no campo `file`) |
+| PUT | `/api/pets/:id` | sim | Atualiza pet (troca a foto se `file` vier); responde `{ count }` |
+| DELETE | `/api/pets/:id` | sim | Soft delete + remove a foto do Cloudinary |
+| POST | `/api/usuarios` | não | Cria usuário (`email`, `name`, `password`) |
+| GET | `/api/usuarios` | não | Lista usuários |
+| GET | `/api/usuarios/:id` | não | Usuário por id |
+| PUT | `/api/usuarios/:id` | não | Atualiza `email`/`name` |
+| DELETE | `/api/usuarios/:id` | não | Remove usuário |
+| POST | `/api/usuarios/login` | não | `{ message, token, user }` + cookie httpOnly `apata_token` |
+| POST | `/api/usuarios/logout` | não | Limpa o cookie |
+| POST | `/api/usuarios/atualizatoken` | sim | Novo token (+ cookie renovado) |
 
-```env
-NEXT_PUBLIC_URLAPI=https://sua-api.com
-```
+Rotas com **auth** aceitam o cookie `apata_token` (enviado automaticamente pelo navegador) ou, na falta dele, o header `Authorization: Bearer <token>`.
 
-> O prefixo `NEXT_PUBLIC_` é obrigatório: a variável é lida no navegador e é **embutida no bundle durante o build**. Se ela não existir no momento do build, o cliente passa a chamar `undefined/pets`.
-
-Endpoints utilizados:
-
-```text
-GET    /pets
-POST   /pets
-PUT    /pets/:id
-DELETE /pets/:id
-POST   /login
-GET    /usuarios      # verificação do token
-```
+> O comportamento é o mesmo da API Express anterior, endpoint por endpoint, incluindo códigos de status e mensagens. Os caminhos ganharam o prefixo `/api` e as três rotas de sessão passaram a viver em `/api/usuarios/*`.
 
 ---
 
@@ -158,11 +193,30 @@ Instale as dependências:
 npm install
 ```
 
-Crie o arquivo `.env.local` (veja `.env.example`):
+Suba um MongoDB local **em replica set** (exigência do Prisma para MongoDB):
+
+```bash
+docker run -d --name apata-mongo -p 27017:27017 mongo:7 mongod --replSet rs0 --bind_ip_all
+docker exec apata-mongo mongosh --quiet --eval "rs.initiate({_id:'rs0',members:[{_id:0,host:'localhost:27017'}]})"
+```
+
+Crie o arquivo `.env.local` (veja `.env.example`). Nenhuma variável tem o prefixo `NEXT_PUBLIC_`; todas ficam só no servidor:
 
 ```env
-NEXT_PUBLIC_URLAPI=http://localhost:3000
+DATABASE_URL="mongodb://localhost:27017/apata?replicaSet=rs0&directConnection=true"
+JWT_SECRET=um-segredo-local
+CLOUDINARY_NAME=...
+CLOUDINARY_KEY=...
+CLOUDINARY_SECRET=...
 ```
+
+Aplique os índices do schema e gere o client (o `postinstall` já roda `prisma generate` a cada `npm install`):
+
+```bash
+DATABASE_URL="mongodb://localhost:27017/apata?replicaSet=rs0&directConnection=true" npx prisma db push
+```
+
+Sem credenciais do Cloudinary, defina `CLOUDINARY_UPLOAD_PREFIX=https://localhost:4567`, rode um stub HTTPS local que responda `POST /v1_1/<cloud>/image/upload` e `/image/destroy`, e inicie o Next com `NODE_TLS_REJECT_UNAUTHORIZED=0` (somente em desenvolvimento).
 
 Execute o projeto em desenvolvimento:
 
@@ -188,37 +242,27 @@ Requer Node.js `>= 20.9` (Next.js 16).
 
 ## ☁️ Deploy na Vercel
 
-O projeto migrou de Vite para Next.js. Os passos abaixo são feitos **manualmente no dashboard da Vercel** e precisam ser concluídos por quem tem acesso ao projeto — em especial o item 2, que deve ser feito **antes do primeiro build desta branch**.
+A API Express separada foi desativada; este projeto é o único servidor. Passos feitos **manualmente no dashboard da Vercel** por quem tem acesso ao projeto, **antes do primeiro build desta branch**:
 
-**1. Framework Preset**
+**1. Variáveis de ambiente** (`Project → Settings → Environment Variables`, ambientes Production e Preview):
 
-`Project → Settings → General`. A Vercel detecta Next.js automaticamente quando `next` está em `dependencies`. Se o preset estiver fixado manualmente em **Vite**, mude para **Next.js**.
+| Variável | Valor |
+| --- | --- |
+| `DATABASE_URL` | a mesma string `mongodb+srv://...` que a API Express usava |
+| `JWT_SECRET` | **o mesmo segredo** da API Express, para que tokens já emitidos continuem válidos |
+| `CLOUDINARY_NAME` / `CLOUDINARY_KEY` / `CLOUDINARY_SECRET` | as mesmas credenciais da API Express |
 
-Limpe qualquer override de **Build Command** e, principalmente, de **Output Directory**: o valor `dist` usado pelo Vite quebra o deploy do Next (a saída agora é `.next`, gerenciada pela própria plataforma). O **Root Directory** continua `./`.
+Remova `NEXT_PUBLIC_URLAPI` e `VITE_URLAPI`: não têm mais leitor. Não defina `CLOUDINARY_UPLOAD_PREFIX` nem `NODE_TLS_REJECT_UNAUTHORIZED` na Vercel.
 
-**2. Variável de ambiente `NEXT_PUBLIC_URLAPI` (obrigatório antes do primeiro build)**
+**2. MongoDB Atlas → Network Access**: as funções da Vercel não têm IP fixo. Libere `0.0.0.0/0` (ou contrate IPs dedicados). Sem isso o deploy sobe verde e toda rota responde 500.
 
-`Project → Settings → Environment Variables`. Adicione `NEXT_PUBLIC_URLAPI` com o mesmo valor que `VITE_URLAPI` tinha, marcando os três ambientes: **Production, Preview e Development**.
+**3. Build**: o preset Next.js detecta o projeto; `postinstall` executa `prisma generate` a cada instalação, contornando o cache de dependências da Vercel. `prisma` está em `devDependencies` — a Vercel instala devDependencies por padrão; não defina `NODE_ENV=production` nas variáveis de build.
 
-Variáveis `NEXT_PUBLIC_*` são **embutidas no bundle em tempo de build**, e não lidas em tempo de execução. Se a variável não existir quando o build rodar, o deploy sobe sem erro e o navegador passa a chamar `undefined/pets` — a listagem de pets simplesmente fica vazia. Por isso ela precisa estar cadastrada **antes** do primeiro build.
+**4. Runtime**: Node.js (Fluid Compute, padrão). Nenhum handler usa `runtime = 'edge'` — Prisma precisa de Node.
 
-Mantenha `VITE_URLAPI` cadastrada até a branch `feat/nextjs` ser mesclada; depois disso pode ser removida.
+**5. Verificação do Preview** (este é o "teste em paralelo" antes de desligar a Express): na URL de Preview confirme `/` com a lista real, `/api/pets` respondendo JSON, login em `/painel` com um administrador real, edição/cadastro/remoção em `/gerenciar` e `/cadastro`, e `/gerenciar` redirecionando para `/painel` em uma janela anônima. Só então faça o merge e desligue o host da API Express.
 
-**3. Node.js**
-
-A versão padrão da Vercel (22.x) atende ao requisito do Next.js 16 (`>= 20.9`). Nenhuma mudança necessária.
-
-**4. `vercel.json` foi removido**
-
-O arquivo continha apenas um rewrite catch-all para SPA (`/(.*)` → `/index.html`), necessário no Vite para que rotas do React Router funcionassem em refresh. O Next.js faz esse roteamento nativamente, então o arquivo foi apagado e **não deve ser recriado**.
-
-**5. Verificação do Preview**
-
-Após o push da branch, a Vercel gera um deployment de Preview. Confirme que a URL serve:
-
-- `/` — página inicial com a lista de pets
-- `/painel` — login
-- `/cadastro` e `/gerenciar` — redirecionam para `/painel` quando não há sessão
+**6. Primeiro acesso após o deploy**: administradores já logados têm o token no `localStorage` mas ainda não têm o cookie; `/gerenciar` os leva a `/painel` para um novo login (uma única vez).
 
 ---
 
@@ -243,13 +287,14 @@ Após o push da branch, a Vercel gera um deployment de Preview. Confirme que a U
 
 ## 🔒 Controle de Acesso
 
-O sistema possui autenticação baseada em token.
+O sistema possui autenticação baseada em JWT (7 dias).
 
-Após o login:
+Após o login (`POST /api/usuarios/login`):
 
-- O token é armazenado localmente
-- Rotas administrativas são liberadas
-- Operações de edição e exclusão utilizam autorização via Bearer Token
+- O servidor grava o token em um cookie **httpOnly** (`apata_token`) e também o devolve no corpo; o cliente guarda a cópia no `localStorage`
+- `/cadastro` e `/gerenciar` são liberadas pelo `src/proxy.ts` apenas com o cookie válido
+- Operações de criação, edição e exclusão de pets aceitam o cookie ou o header `Authorization: Bearer <token>`
+- `Sair` chama `POST /api/usuarios/logout` (limpa o cookie) e apaga o token local
 
 ---
 
@@ -263,7 +308,8 @@ Durante o desenvolvimento foram aplicados conceitos como:
 - Consumo de APIs REST
 - Cache e sincronização de dados com React Query
 - Formulários com React Hook Form
-- Rotas protegidas com guarda client-side
+- Rotas protegidas por guarda server-side (proxy) e cookie httpOnly
+- Route Handlers, Prisma e MongoDB no App Router
 - Responsividade utilizando Tailwind CSS
 
 ---
