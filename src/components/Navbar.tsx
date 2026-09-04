@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 import Alert from './Alert'
 import LogoApata from '@/img/logoapata.png'
 import { clearToken, getToken, useAuthToken } from '@/lib/auth'
-import { verifyToken } from '@/lib/api'
+import { logoutAdmin, verifyToken } from '@/lib/api'
 
 export default function Navbar() {
   const router = useRouter()
@@ -30,9 +30,11 @@ export default function Navbar() {
     }
   }
 
-  function logout() {
+  async function logout() {
+    await logoutAdmin().catch(() => undefined)
     clearToken()
     router.push('/painel')
+    router.refresh()
     setLogoutAlertOpen(false)
   }
 

@@ -87,12 +87,12 @@ export default function Item({ pet, admin, onDelete, onUpdate, onStart, onEnd }:
 
   function toggleEdit() {
     setEditing(!editing)
-    reset({ nome, descricao, especie, porte, sexo, contato: digitsOnly(contato) })
+    reset({ nome, descricao, especie, porte, sexo, contato: contato ? digitsOnly(contato) : '' })
   }
 
-  const whatsappLink = `https://wa.me/55${digitsOnly(contato)}?text=${encodeURIComponent(
-    `Quero saber mais sobre o ${especie} ${nome}`,
-  )}`
+  const whatsappLink = contato
+    ? `https://wa.me/55${digitsOnly(contato)}?text=${encodeURIComponent(`Quero saber mais sobre o ${especie} ${nome}`)}`
+    : null
 
   return (
     <>
@@ -102,7 +102,7 @@ export default function Item({ pet, admin, onDelete, onUpdate, onStart, onEnd }:
         title={`foto ${nome}`}
         content={
           // eslint-disable-next-line @next/next/no-img-element -- remote user-uploaded photo, host not configured
-          <img src={foto} alt={nome} className="w-full h-[calc(100vh-100px)] object-contain" />
+          <img src={foto ?? undefined} alt={nome} className="w-full h-[calc(100vh-100px)] object-contain" />
         }
       />
 
@@ -132,7 +132,7 @@ export default function Item({ pet, admin, onDelete, onUpdate, onStart, onEnd }:
 
               {/* eslint-disable-next-line @next/next/no-img-element -- remote photo or FileReader data URL preview */}
               <img
-                src={photoPreview ?? foto}
+                src={photoPreview ?? foto ?? undefined}
                 alt={`um ${especie} ${sexo} ${porte}`}
                 onClick={() => setZoom(true)}
                 className={`${editing ? 'brightness-75' : 'brightness-100'} ${
@@ -198,15 +198,17 @@ export default function Item({ pet, admin, onDelete, onUpdate, onStart, onEnd }:
             </label>
             <p className="text-center text-[18px]">{descricao}.</p>
 
-            <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
-              <Button
-                name={
-                  <div className="flex items-center justify-center gap-1">
-                    <IoLogoWhatsapp className="p-0 m-0" /> <p>Contato</p>
-                  </div>
-                }
-              />
-            </a>
+            {whatsappLink ? (
+              <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+                <Button
+                  name={
+                    <div className="flex items-center justify-center gap-1">
+                      <IoLogoWhatsapp className="p-0 m-0" /> <p>Contato</p>
+                    </div>
+                  }
+                />
+              </a>
+            ) : null}
           </div>
         ) : null}
 

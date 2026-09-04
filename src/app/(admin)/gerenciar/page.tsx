@@ -9,7 +9,7 @@ import PetFilters from '@/components/PetFilters'
 import Spinner from '@/components/Spinner'
 import { deletePet, listPets, updatePet } from '@/lib/api'
 import { EMPTY_FILTERS, filterPets } from '@/lib/filterPets'
-import type { Pet, PetFilters as PetFiltersValue } from '@/types'
+import type { Pet, PetFilters as PetFiltersValue, UpdateResult } from '@/types'
 
 interface DeleteTarget {
   id: Pet['id']
@@ -39,7 +39,7 @@ export default function GerenciarPage() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['itens'] }),
   })
 
-  function handleUpdate(id: Pet['id'], formData: FormData): Promise<Pet> {
+  function handleUpdate(id: Pet['id'], formData: FormData): Promise<UpdateResult> {
     return updateMutation.mutateAsync({ id, formData })
   }
 
