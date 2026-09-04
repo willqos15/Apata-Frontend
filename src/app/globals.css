@@ -1,0 +1,106 @@
+@import "tailwindcss";
+
+:root {
+  --bg-color: #ffff;
+  --bg-color2: #F0F7E8;
+  --text-color: #437900;
+  --text-color2: #2E3A1F;
+  --primary-color: #B6DA7A;
+  --secondary-color: #95b265;
+  --tertiary-color: #8FC13E;
+}
+
+* {
+  box-sizing: border-box;
+  outline: 0;
+  font-family: var(--font-wdxl), sans-serif;
+}
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: var(--font-wdxl), sans-serif;
+  font-weight: 400;
+  text-align: center;
+}
+
+#root {
+  margin-top: 25px;
+  min-height: 100vh;
+  padding-top: 40px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  font-size: 25px;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-color);
+}
+
+.formlabel {
+  color: var(--text-color);
+  font-size: 25px;
+  text-align: left;
+  padding: 30px 0px 10px 0px;
+  font-weight: bold;
+}
+
+.formerro {
+  font-size: 20px;
+  color: #8f0404;
+  padding: 5px;
+  margin: 0px;
+}
+
+.navitem {
+  color: var(--text-color2);
+  cursor: pointer;
+  transition: all;
+  transition-duration: 200ms;
+}
+.navitem:hover {
+  color: var(--tertiary-color);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 50px;
+}
+
+.input, .textarea {
+  width: 90%;
+  display: block;
+  margin: auto;
+  margin-bottom: 0px;
+  margin-top: 0px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #fff;
+  border: 2px solid var(--primary-color);
+  font-family: var(--font-wdxl), sans-serif;
+  color: black;
+  font-size: 18px;
+  height: fit-content;
+}
+
+@media (max-width: 640px) {
+  .input, .textarea { font-size: 18px; }
+}
+
+.plogin {
+  margin: auto;
+  font-size: 25px;
+  padding: 10px 0px 0px 0px;
+  color: #DA7A4A;
+  font-weight: bold;
+}
+
+input, button, textarea {
+  touch-action: manipulation;
+}

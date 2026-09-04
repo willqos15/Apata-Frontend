@@ -23,3 +23,19 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# next.js
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+
+# env
+.env*.local
+
+# vercel
+.vercel
+
+# next 16 auto-generated agent rules
+/AGENTS.md
+/CLAUDE.md
