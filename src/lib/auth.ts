@@ -37,19 +37,3 @@ function getServerToken(): null {
 export function useAuthToken(): string | null {
   return useSyncExternalStore(subscribe, getToken, getServerToken)
 }
-
-function noopSubscribe(): () => void {
-  return () => {}
-}
-
-function clientSnapshot(): boolean {
-  return true
-}
-
-function serverSnapshot(): boolean {
-  return false
-}
-
-export function useIsClient(): boolean {
-  return useSyncExternalStore(noopSubscribe, clientSnapshot, serverSnapshot)
-}
