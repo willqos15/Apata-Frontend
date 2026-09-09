@@ -27,8 +27,13 @@ export async function readPetBody(request: NextRequest): Promise<ParsedBody> {
     let file: File | null = null
 
     for (const [key, value] of formData.entries()) {
-      if (typeof value === 'string') fields[key] = value
-      else if (key === 'file') file = value
+      if (typeof value === 'string') {
+        if (value === 'true') fields[key] = true
+        else if (value === 'false') fields[key] = false
+        else fields[key] = value
+      } else if (key === 'file') {
+        file = value
+      }
     }
 
     return { fields, file }

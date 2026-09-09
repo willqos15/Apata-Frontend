@@ -8,12 +8,56 @@ datasource db {
 }
 
 model User {
-  id       String  @id @default(auto()) @map("_id") @db.ObjectId
-  email    String  @unique
-  name     String?
-  password String
+  id            String    @id @map("_id")
+  email         String    @unique
+  name          String?
+  emailVerified Boolean   @default(false)
+  image         String?
+  password      String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
-  pets Pet[]
+  sessions Session[]
+  accounts Account[]
+  pets     Pet[]
+}
+
+model Session {
+  id        String   @id @map("_id")
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Account {
+  id                    String    @id @map("_id")
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+}
+
+model Verification {
+  id         String   @id @map("_id")
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model Pet {
@@ -27,6 +71,11 @@ model Pet {
   descricao     String
   contato       String?
 
+  vacinado      Boolean? @default(false)
+  vermifugado   Boolean? @default(false)
+  castrado      Boolean? @default(false)
+  microchip     Boolean? @default(false)
+
   adotado  Boolean @default(false)
   aprovado Boolean @default(true)
   tutelado Boolean @default(true)
@@ -37,5 +86,5 @@ model Pet {
   updatedAt DateTime @updatedAt
 
   owner   User   @relation(fields: [ownerId], references: [id])
-  ownerId String @db.ObjectId
+  ownerId String
 }

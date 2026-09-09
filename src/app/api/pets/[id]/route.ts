@@ -4,6 +4,8 @@ import { prisma } from '@/server/prisma'
 import { authenticate } from '@/server/auth'
 import { readPetBody } from '@/server/body'
 import { destroyPhoto, uploadPetPhoto } from '@/server/cloudinary'
+import { validateServerImage } from '@/server/imageValidation'
+import { petSchema } from '@/lib/validations/pet'
 
 interface RouteParams {
   params: Promise<{ id: string }>
@@ -21,7 +23,7 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
 }
 
 export async function PUT(request: NextRequest, { params }: RouteParams) {
-  const auth = authenticate(request)
+  const auth = await authenticate(request)
   if ('error' in auth) return auth.error
 
   try {
@@ -30,12 +32,25 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     if (!dadosAtuais) return NextResponse.json({ error: 'Pet não encontrado' }, { status: 404 })
 
     const { fields, file } = await readPetBody(request)
-    const dataUpdate: Record<string, unknown> = { ...fields }
+
+    // Validação dos dados informados com Zod (suporta atualização parcial ou total)
+    const parseResult = petSchema.partial().safeParse(fields)
+    if (!parseResult.success) {
+      const firstError = parseResult.error.errors[0]?.message || 'Dados inválidos.'
+      return NextResponse.json({ error: firstError, details: parseResult.error.flatten() }, { status: 400 })
+    }
+
+    const dataUpdate: Record<string, unknown> = { ...parseResult.data }
 
     let fotoSubstituida: string | null = null
 
     if (file) {
-      const resultado = await uploadPetPhoto(file)
+      const imageValidation = await validateServerImage(file)
+      if (!imageValidation.valid) {
+        return NextResponse.json({ error: imageValidation.error }, { status: 400 })
+      }
+
+      const resultado = await uploadPetPhoto(imageValidation.buffer ?? file)
       dataUpdate.foto = resultado.secure_url
       dataUpdate.public_idfoto = resultado.public_id
       fotoSubstituida = dadosAtuais.public_idfoto
@@ -49,13 +64,14 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     if (fotoSubstituida) await destroyPhoto(fotoSubstituida).catch(() => undefined)
 
     return NextResponse.json(petAtualizado, { status: 200 })
-  } catch {
+  } catch (error) {
+    console.error('Erro ao atualizar pet:', error)
     return NextResponse.json({ error: 'Erro ao atualizar pet' }, { status: 500 })
   }
 }
 
 export async function DELETE(request: NextRequest, { params }: RouteParams) {
-  const auth = authenticate(request)
+  const auth = await authenticate(request)
   if ('error' in auth) return auth.error
 
   try {

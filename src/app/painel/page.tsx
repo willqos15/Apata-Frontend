@@ -1,20 +1,26 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
-import { useMutation } from '@tanstack/react-query'
 import Button from '@/components/Button'
 import Spinner from '@/components/Spinner'
-import { loginAdmin } from '@/lib/api'
-import { setToken } from '@/lib/auth'
-import type { LoginPayload, LoginResponse } from '@/types'
+import { authClient, useSession } from '@/lib/auth-client'
+import type { LoginPayload } from '@/types'
 
 type LoginStatus = 'deslogado' | 'carregando' | 'logado' | 'erro'
 
 export default function PainelPage() {
   const router = useRouter()
+  const { data: session, isPending } = useSession()
   const [loginStatus, setLoginStatus] = useState<LoginStatus>('deslogado')
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (session) {
+      router.replace('/gerenciar')
+    }
+  }, [session, router])
 
   const {
     handleSubmit,
@@ -22,21 +28,32 @@ export default function PainelPage() {
     formState: { errors },
   } = useForm<LoginPayload>({ mode: 'onChange' })
 
-  const loginMutation = useMutation<LoginResponse, Error, LoginPayload>({
-    mutationFn: loginAdmin,
-    onSuccess: (data) => {
-      setToken(data.token)
-      setLoginStatus('logado')
-      router.push('/gerenciar')
-    },
-    onError: () => {
-      setLoginStatus('erro')
-    },
-  })
-
-  function login(credentials: LoginPayload) {
+  async function login(credentials: LoginPayload) {
     setLoginStatus('carregando')
-    loginMutation.mutate(credentials)
+    setErrorMessage(null)
+
+    const { error } = await authClient.signIn.email({
+      email: credentials.email,
+      password: credentials.password,
+    })
+
+    if (error) {
+      setLoginStatus('erro')
+      setErrorMessage(error.message || 'Login ou Senha incorreto!')
+      return
+    }
+
+    setLoginStatus('logado')
+    router.push('/gerenciar')
+    router.refresh()
+  }
+
+  if (isPending) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center">
+        <Spinner className="pt-15 mx-auto" />
+      </div>
+    )
   }
 
   return (
@@ -59,7 +76,7 @@ export default function PainelPage() {
             <input className="input" {...register('password', { required: true })} type="password" placeholder="Senha" />
 
             {(errors.email || errors.password) && <p className="plogin">Campo obrigatório</p>}
-            {loginMutation.isError && <p className="plogin">Login ou Senha incorreto!</p>}
+            {loginStatus === 'erro' && <p className="plogin">{errorMessage || 'Login ou Senha incorreto!'}</p>}
 
             <Button name="Entrar" type="submit" size={15} className="text-[10pt] mt-2" />
           </form>

@@ -12,6 +12,7 @@ const wdxl = WDXL_Lubrifont_JP_N({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-wdxl',
+  adjustFontFallback: false,
 })
 
 export const metadata: Metadata = {

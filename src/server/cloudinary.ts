@@ -11,8 +11,8 @@ cloudinary.config({
   ...(process.env.CLOUDINARY_UPLOAD_PREFIX ? { upload_prefix: process.env.CLOUDINARY_UPLOAD_PREFIX } : {}),
 })
 
-export async function uploadPetPhoto(file: File): Promise<UploadApiResponse> {
-  const buffer = Buffer.from(await file.arrayBuffer())
+export async function uploadPetPhoto(fileOrBuffer: File | Buffer): Promise<UploadApiResponse> {
+  const buffer = Buffer.isBuffer(fileOrBuffer) ? fileOrBuffer : Buffer.from(await fileOrBuffer.arrayBuffer())
 
   const upload = new Promise<UploadApiResponse>((resolve, reject) => {
     const uploadStream = cloudinary.uploader.upload_stream({ folder: PETS_FOLDER }, (error, result) => {

@@ -6,33 +6,25 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import Alert from './Alert'
 import LogoApata from '@/img/logoapata.png'
-import { clearToken, getToken, useAuthToken } from '@/lib/auth'
-import { logoutAdmin, verifyToken } from '@/lib/api'
+import { signOut, useSession } from '@/lib/auth-client'
 
 export default function Navbar() {
   const router = useRouter()
-  const isAdmin = useAuthToken() !== null
+  const { data: session } = useSession()
+  const isAdmin = !!session
   const [menuOpen, setMenuOpen] = useState(false)
   const [logoutAlertOpen, setLogoutAlertOpen] = useState(false)
 
-  async function goToAdminArea() {
-    if (!getToken()) {
+  function goToAdminArea() {
+    if (!isAdmin) {
       router.push('/painel')
       return
     }
-
-    try {
-      await verifyToken()
-      router.push('/gerenciar')
-    } catch {
-      clearToken()
-      router.push('/painel')
-    }
+    router.push('/gerenciar')
   }
 
   async function logout() {
-    await logoutAdmin().catch(() => undefined)
-    clearToken()
+    await signOut()
     router.push('/painel')
     router.refresh()
     setLogoutAlertOpen(false)
