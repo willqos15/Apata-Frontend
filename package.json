@@ -2,11 +2,16 @@
   "name": "achados-e-perdidos",
   "private": true,
   "version": "0.0.0",
+  "engines": {
+    "node": ">=22.13.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
+    "test": "vitest",
+    "test:run": "vitest run",
     "typecheck": "tsc --noEmit",
     "postinstall": "prisma generate"
   },
@@ -26,15 +31,20 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.3",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.7",
     "@types/jsonwebtoken": "9.0.10",
-    "@types/node": "^20.19.0",
+    "@types/node": "^22.0.0",
     "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",
     "babel-plugin-react-compiler": "^1.0.0",
     "eslint": "^9.39.1",
     "eslint-config-next": "16.3.4",
+    "jsdom": "^30.0.1",
     "prisma": "6.19.3",
     "tailwindcss": "^4.3.3",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.7"
   }
 }
