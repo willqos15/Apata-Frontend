@@ -21,6 +21,7 @@ const INITIAL_VALUES: PetFormValues = {
   sexo: '',
   descricao: '',
   contato: DEFAULT_PHONE,
+  adotado: false,
 }
 
 export default function PetForm() {
@@ -61,6 +62,7 @@ export default function PetForm() {
     formData.append('porte', values.porte)
     formData.append('sexo', values.sexo)
     formData.append('descricao', values.descricao)
+    formData.append('adotado', values.adotado ? 'true' : 'false')
     if (photoFile.current) formData.append('file', photoFile.current)
     formData.append('contato', values.contato)
 
@@ -143,6 +145,13 @@ export default function PetForm() {
             onFocus={scrollIntoCenter}
           />
           {errors.descricao && <p className="formerro">Campo obrigatório</p>}
+
+          <div className="flex flex-col gap-2 my-4 text-(--text-color)">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" {...register('adotado')} className="w-5 h-5 accent-(--bg-color)" />
+              <span className="text-[16px] font-bold">Adotado</span>
+            </label>
+          </div>
 
           <label className="formlabel"> Contato:</label>
           <Controller

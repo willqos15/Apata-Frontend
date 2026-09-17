@@ -22,7 +22,9 @@ export default function HomePets({ initialPets }: HomePetsProps) {
   })
 
   const [filters, setFilters] = useState<PetFiltersValue>(EMPTY_FILTERS)
-  const filteredPets = filterPets(Array.isArray(data) ? data : [], filters)
+  const fetchedPets = Array.isArray(data) ? data : []
+  const availablePets = fetchedPets.filter((p) => !p.adotado)
+  const filteredPets = filterPets(availablePets, filters)
 
   return (
     <>

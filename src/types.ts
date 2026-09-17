@@ -11,6 +11,7 @@ export interface Pet {
   porte: Size
   descricao: string
   contato: string | null
+  adotado: boolean
 }
 
 export interface PetFormValues {
@@ -20,6 +21,7 @@ export interface PetFormValues {
   porte: Size | ''
   sexo: Sex | ''
   contato: string
+  adotado: boolean
 }
 
 export interface PetFilters {
