@@ -24,6 +24,7 @@ const EMPTY_VALUES: PetFormValues = {
   sexo: '',
   descricao: '',
   contato: DEFAULT_PHONE,
+  adotado: false,
   vacinado: false,
   vermifugado: false,
   castrado: false,
@@ -108,6 +109,7 @@ export default function PetForm() {
     formData.append('porte', values.porte)
     formData.append('sexo', values.sexo)
     formData.append('descricao', values.descricao)
+    formData.append('adotado', values.adotado ? 'true' : 'false')
     formData.append('vacinado', values.vacinado ? 'true' : 'false')
     formData.append('vermifugado', values.vermifugado ? 'true' : 'false')
     formData.append('castrado', values.castrado ? 'true' : 'false')
@@ -214,6 +216,13 @@ export default function PetForm() {
             <label className="flex items-center gap-2 cursor-pointer">
               <input type="checkbox" {...register('castrado')} className="w-5 h-5 accent-(--bg-color)" />
               <span className="text-[16px] font-bold">Castrado</span>
+            </label>
+          </div>
+
+          <div className="flex flex-col gap-2 my-4 text-(--text-color)">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" {...register('adotado')} className="w-5 h-5 accent-(--bg-color)" />
+              <span className="text-[16px] font-bold">Adotado</span>
             </label>
           </div>
 

@@ -32,6 +32,9 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     const { fields, file } = await readPetBody(request)
     const dataUpdate: Record<string, unknown> = { ...fields }
 
+    if (typeof dataUpdate.adotado === 'string') dataUpdate.adotado = dataUpdate.adotado === 'true'
+    if (typeof dataUpdate.tutelado === 'string') dataUpdate.tutelado = dataUpdate.tutelado === 'true'
+
     let fotoSubstituida: string | null = null
 
     if (file) {

@@ -11,6 +11,7 @@ export interface Pet {
   porte: Size
   descricao: string
   contato: string | null
+  adotado: boolean | null
   vacinado: boolean | null
   vermifugado: boolean | null
   castrado: boolean | null
@@ -23,6 +24,7 @@ export interface PetFormValues {
   porte: Size | ''
   sexo: Sex | ''
   contato: string
+  adotado: boolean
   vacinado: boolean
   vermifugado: boolean
   castrado: boolean

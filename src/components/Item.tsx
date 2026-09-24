@@ -34,7 +34,7 @@ function capitalize(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
 }
 
 export default function Item({ pet, admin, onDelete, onUpdate, onStart, onEnd }: ItemProps) {
-  const { id, nome, descricao, especie, foto, porte, sexo, contato } = pet
+  const { id, nome, descricao, especie, foto, porte, sexo, contato, adotado } = pet
 
   const [expanded, setExpanded] = useState(false)
   const [editing, setEditing] = useState(false)
@@ -60,7 +60,7 @@ export default function Item({ pet, admin, onDelete, onUpdate, onStart, onEnd }:
 
       const formData = new FormData()
       ;(Object.keys(values) as Array<keyof PetFormValues>).forEach((key) => {
-        formData.append(key, values[key].toString())
+        formData.append(key, String(values[key]))
       })
 
       const file = photoInput.current?.files?.[0]
@@ -87,7 +87,7 @@ export default function Item({ pet, admin, onDelete, onUpdate, onStart, onEnd }:
 
   function toggleEdit() {
     setEditing(!editing)
-    reset({ nome, descricao, especie, porte, sexo, contato: contato ? digitsOnly(contato) : '' })
+    reset({ nome, descricao, especie, porte, sexo, contato: contato ? digitsOnly(contato) : '', adotado: adotado ?? false })
   }
 
   const whatsappLink = contato
@@ -292,6 +292,13 @@ export default function Item({ pet, admin, onDelete, onUpdate, onStart, onEnd }:
                 )}
               />
               {errors.contato && <p>{errors.contato.message}</p>}
+
+              <div className="flex flex-col gap-2 my-4 text-(--text-color)">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input type="checkbox" {...register('adotado')} className="w-5 h-5 accent-(--bg-color)" />
+                  <span className="text-[16px] font-bold">Adotado</span>
+                </label>
+              </div>
 
               <Button name="Salvar" type="submit" className="mt-2 mx-auto" />
             </form>
