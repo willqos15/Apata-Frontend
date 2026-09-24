@@ -37,7 +37,7 @@ export const renderNumbers = ({
           transition-colors
           ${
             i === currentPage
-              ? "bg-blue-600 text-white"
+              ? "bg-(--primary-color) text-white"
               : "bg-gray-50 text-black hover:bg-gray-100"
           }
         `}

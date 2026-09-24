@@ -26,7 +26,7 @@ describe('renderNumbers',()=>{
         btns.map((val,ind)=>{
             const index = ind+1
             if(index === currentPage){
-                expect(val).toHaveClass('bg-blue-600 text-white')
+                expect(val).toHaveClass('bg-(--primary-color) text-white')
             }else{
                 expect(val).toHaveClass('bg-gray-50 text-black hover:bg-gray-100')
             }
