@@ -14,7 +14,8 @@ import { fetchPetsServer } from '@/lib/pets-server'
 
 async function PetsFromServer() {
   const pets = await fetchPetsServer()
-  return <HomePets initialPets={pets} />
+  const availablePets = pets?.filter((pet) => !pet.adotado) || null
+  return <HomePets initialPets={availablePets} />
 }
 
 function JoinGroupButton() {
