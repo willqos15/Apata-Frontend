@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { PatternFormat } from 'react-number-format'
 import Button from './Button'
+import ImageCropper from './ImageCropper'
 import Spinner from './Spinner'
 import { createPet } from '@/lib/api'
 import { scrollIntoCenter } from '@/lib/focus'
@@ -65,6 +66,8 @@ export default function PetForm() {
   const photoInput = useRef<HTMLInputElement>(null)
   const [photoError, setPhotoError] = useState<'' | 'erro'>('')
   const [fileName, setFileName] = useState('')
+  const [cropSource, setCropSource] = useState<File | null>(null)
+  const [cropOpen, setCropOpen] = useState(false)
   const [message, setMessage] = useState<SubmitMessage>('')
   const [status, setStatus] = useState<SubmitStatus>('inicio')
 
@@ -135,13 +138,41 @@ export default function PetForm() {
   function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     if (!file) return
+
+    setCropSource(file)
+    setCropOpen(true)
+  }
+
+  function cancelCrop() {
+    setCropOpen(false)
+    setCropSource(null)
+
+    if (photoInput.current) photoInput.current.value = ''
+  }
+  function confirmCrop(file: File) {
     photoFile.current = file
     setFileName(file.name)
     setPhotoError('')
+    setCropOpen(false)
+    setCropSource(null)
+
+    if (photoInput.current) photoInput.current.value = ''
   }
 
   return (
     <div className="pt-10 relative min-h-screen">
+      <ImageCropper
+        key={
+          cropSource
+            ? `${cropSource.name}-${cropSource.lastModified}`
+            : 'cropper'
+        }
+        image={cropSource}
+        open={cropOpen}
+        onConfirm={confirmCrop}
+        onCancel={cancelCrop}
+      />
+
       <form
         onSubmit={(e) => void handleSubmit(submit)(e)}
         className="flex flex-col max-w-72 px-5 my-10 mx-auto justify-start rounded-2xl bg-(--bg-color2)"

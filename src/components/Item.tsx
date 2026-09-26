@@ -6,6 +6,7 @@ import { PatternFormat } from 'react-number-format'
 import { MdAddPhotoAlternate } from 'react-icons/md'
 import { IoLogoWhatsapp, IoMdFemale, IoMdMale } from 'react-icons/io'
 import Button from './Button'
+import ImageCropper from './ImageCropper'
 import Popup from './Popup'
 import type { Pet, PetFormValues } from '@/types'
 
@@ -40,6 +41,9 @@ export default function Item({ pet, admin, onDelete, onUpdate, onStart, onEnd }:
   const [editing, setEditing] = useState(false)
   const [zoom, setZoom] = useState(false)
   const [photoPreview, setPhotoPreview] = useState<string | null>(null)
+  const [cropSource, setCropSource] = useState<File | null>(null)
+  const [cropOpen, setCropOpen] = useState(false)
+  const croppedPhotoFile = useRef<File | null>(null)
   const photoInput = useRef<HTMLInputElement>(null)
 
   const {
@@ -63,10 +67,13 @@ export default function Item({ pet, admin, onDelete, onUpdate, onStart, onEnd }:
         formData.append(key, values[key].toString())
       })
 
-      const file = photoInput.current?.files?.[0]
-      if (file) formData.append('file', file)
+      if (croppedPhotoFile.current)
+        formData.append('file', croppedPhotoFile.current)
 
       await onUpdate(id, formData)
+      croppedPhotoFile.current = null
+      setPhotoPreview(null)
+      if (photoInput.current) photoInput.current.value = ''
     } catch (error) {
       console.error(error)
     } finally {
@@ -78,11 +85,8 @@ export default function Item({ pet, admin, onDelete, onUpdate, onStart, onEnd }:
     const file = e.target.files?.[0]
     if (!file) return
 
-    const reader = new FileReader()
-    reader.onload = () => {
-      if (typeof reader.result === 'string') setPhotoPreview(reader.result)
-    }
-    reader.readAsDataURL(file)
+    setCropSource(file)
+    setCropOpen(true)
   }
 
   function toggleEdit() {
@@ -96,6 +100,23 @@ export default function Item({ pet, admin, onDelete, onUpdate, onStart, onEnd }:
 
   return (
     <>
+      {cropSource && (
+        <ImageCropper
+        image={cropSource}
+        open={cropOpen}
+        onCancel={() => {
+          setCropOpen(false)
+          setCropSource(null)
+        }}
+        onConfirm={(file) => {
+          croppedPhotoFile.current = file
+          setPhotoPreview(URL.createObjectURL(file))
+          setCropOpen(false)
+          setCropSource(null)
+        }}
+        />
+      )}
+
       <Popup
         open={zoom}
         setOpen={setZoom}
@@ -130,7 +151,6 @@ export default function Item({ pet, admin, onDelete, onUpdate, onStart, onEnd }:
                 </button>
               )}
 
-            
               <img
                 src={photoPreview ?? foto ?? undefined}
                 alt={`um ${especie} ${sexo} ${porte}`}
